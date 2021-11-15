@@ -1,0 +1,336 @@
+openapi: 3.0.0
+info:
+  title: Kemejaku
+  description: REST API untuk mini project backend
+  version: 0.1.9
+servers:
+  - url: http://kemejaku.api.com/v1
+    description: Optional server description, e.g. Main (production) server
+paths:
+  /users:
+    get:
+      summary: Returns a list of users.
+      description: get all users
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  data:
+                    type: array
+                    example: "haha"
+
+    post:
+      summary: Add a new user
+      parameters:
+        - name: mail
+          in: path
+          required: true
+          description: The mail of the user
+          schema:
+            type: string
+            minimum: 6
+            maximum: 20
+        - name: password
+          in: header
+          required: true
+          description: The password of the user/account
+          schema:
+            type: string
+            minimum: 8
+      responses:
+        '200':
+          description: Registered successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 4
+
+    patch:
+      summary: Edit user information.
+      requestBody:
+        required: true
+        description: request mail and password for user
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/User'
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The ID of the user to return.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+        - name: mail
+          in: path
+          required: true
+          description: The mail of the user
+          schema:
+            type: string
+            minimum: 6
+            maximum: 20
+      responses:
+        '200':
+          description: Registered successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 4
+      
+          
+
+  /users/{userId}:
+    get:
+      summary: Returns a user by ID.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The ID of the user to return.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: A user object.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 4
+                  name:
+                    type: string
+                    example: Yustina Yasin
+        '400':
+          description: The specified user ID is invalid (not a number).
+        '404':
+          description: A user with the specified ID was not found.
+        default:
+          description: Unexpected error
+  
+  /Kemeja:
+    get:
+      summary: Returns a list of kemeja.
+      description: get all kemeja
+      responses:
+        '200':    # status code
+          description: A JSON array of kemeja names
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  data:
+                    type: array
+                    example: "haha"
+    
+  /Kemeja/{kemejaId}:
+    get:
+      summary: Returns a kemeja by ID.
+      parameters:
+        - name: kemejaId
+          in: path
+          required: true
+          description: The ID of the kemeja to return.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: A kemeja object.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 4
+                  name:
+                    type: string
+                    example: Yustina Yasin
+        '400':
+          description: The specified kemeja ID is invalid (not a number).
+        '404':
+          description: A kemeja with the specified ID was not found.
+        default:
+          description: Unexpected error
+  
+  /Keranjang:
+    get:
+      summary: Returns a list of keranjang.
+      description: get all keranjang
+      responses:
+        '200':    # status code
+          description: A JSON array of keranjang names
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  data:
+                    type: array
+                    example: "haha"
+    post:
+      summary: Add a new keranjang
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The id of the user
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Registered successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 4
+    patch:
+      summary: Edit keranjang status
+      requestBody:
+        description: the status of keranjang
+        content:
+          application/json:
+            schema:
+              properties:
+                checked:
+                  type: boolean
+      responses:
+        '200':
+          description: Registered successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 4
+    
+  /Keranjang/{keranjangId}:
+    get:
+      summary: Returns a keranjang by ID.
+      parameters:
+        - name: keranjangId
+          in: path
+          required: true
+          description: The ID of the keranjang to return.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: A keranjang object.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 4
+                  name:
+                    type: string
+                    example: Yustina Yasin
+        '400':
+          description: The specified kemeja ID is invalid (not a number).
+        '404':
+          description: A kemeja with the specified ID was not found.
+        default:
+          description: Unexpected error
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        userId:
+          type: integer
+          minimum: 1
+        fullname:
+          type: string
+        email:
+          type: string
+        nomorTelepon:
+          type: string
+        street:
+          type: string
+        address:
+          type: string
+        postalCode:
+          type: string
+      required:
+        - email
+    Kemeja:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        nama:
+          type: string
+        deskripsi:
+          type: string
+        harga:
+          type: integer
+        stock_L:
+          type: integer
+        stock_M:
+          type: integer
+        stock_S:
+          type: integer 
+    Keranjang:
+       type: object
+       properties:
+        id:
+          type: integer
+          minimum: 1
+        userId:
+          type: integer
+        checked:
+          type: boolean
+    Kemeja_keranjang:
+      type: object
+      properties:
+        kemejaId:
+          type: integer
+        keranjangId:
+          type: integer
+        jumlah:
+          type: integer
+        size:
+          type: integer
