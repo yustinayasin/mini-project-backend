@@ -9,6 +9,8 @@ servers:
 paths:
   /users:
     get:
+      tags: 
+        - User
       summary: Returns a list of users.
       description: get all users
       responses:
@@ -19,15 +21,24 @@ paths:
               schema: 
                 type: object
                 properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: success
                   data:
                     type: array
-                    example: "haha"
+                    items:
+                      $ref: '#/components/schemas/User'
 
     post:
+      tags: 
+        - User
       summary: Add a new user
       parameters:
         - name: mail
-          in: path
+          in: header
           required: true
           description: The mail of the user
           schema:
@@ -49,55 +60,39 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
+                  code:
                     type: integer
-                    format: int64
-                    example: 4
-
-    patch:
-      summary: Edit user information.
-      requestBody:
-        required: true
-        description: request mail and password for user
-        content:
-          application/json:
-            schema:
-              oneOf:
-                - $ref: '#/components/schemas/User'
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          description: The ID of the user to return.
-          schema:
-            type: integer
-            format: int64
-            minimum: 1
-        - name: mail
-          in: path
-          required: true
-          description: The mail of the user
-          schema:
-            type: string
-            minimum: 6
-            maximum: 20
-      responses:
-        '200':
-          description: Registered successfully.
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                          type: integer
+                          format: int64
+                          example: 4
+        '400':
+          description: One or both parameters are empty.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  id:
+                  code:
                     type: integer
-                    format: int64
-                    example: 4
-      
-          
-
+                    example: 400
+                  message:
+                    type: string
+                    example: bad request
+        default:
+          description: Unexpected error
+        
   /users/{userId}:
     get:
+      tags: 
+        - User
       summary: Returns a user by ID.
       parameters:
         - name: userId
@@ -129,9 +124,96 @@ paths:
           description: A user with the specified ID was not found.
         default:
           description: Unexpected error
+    
+    patch:
+      tags: 
+        - User
+      summary: Edit user information.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The ID of the user to return.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        required: true
+        description: request mail and password for user
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Edited successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        default:
+          description: Unexpected error
+
+    delete:
+      tags: 
+        - User
+      summary: Delete a user.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The ID of the user to return.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Deleted successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: User deleted successfully
+        '404':
+          description: The user failed to delete because the id does not exist.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: User Id does not exist
+        default:
+          description: Unexpected error
   
-  /Kemeja:
+  /kemejas:
     get:
+      tags: 
+        - Kemeja
       summary: Returns a list of kemeja.
       description: get all kemeja
       responses:
@@ -144,10 +226,63 @@ paths:
                 properties:
                   data:
                     type: array
-                    example: "haha"
+                    items:
+                      $ref: '#/components/schemas/Kemeja'
     
-  /Kemeja/{kemejaId}:
+    post:
+      tags: 
+        - Kemeja
+      summary: Add a new kemeja
+      requestBody:
+        required: true
+        description: request kemeja information
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/Kemeja'
+      responses:
+        '200':
+          description: Registered successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                          type: integer
+                          format: int64
+                          example: 4
+        '400':
+          description: One or both information are empty.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: bad request
+        default:
+          description: Unexpected error
+    
+
+  /kemeja/{kemejaId}:
     get:
+      tags: 
+        - Kemeja
       summary: Returns a kemeja by ID.
       parameters:
         - name: kemejaId
@@ -179,9 +314,96 @@ paths:
           description: A kemeja with the specified ID was not found.
         default:
           description: Unexpected error
+    
+    patch:
+      tags: 
+        - Kemeja
+      summary: Edit kemeja information.
+      parameters:
+        - name: kemejaId
+          in: path
+          required: true
+          description: The ID of the kemeja to return.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        required: true
+        description: request information for kemeja
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/Kemeja'
+      responses:
+        '200':
+          description: Edited successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Kemeja'
+        default:
+          description: Unexpected error
+
+    delete:
+      tags: 
+        - Kemeja
+      summary: Delete a kemeja.
+      parameters:
+        - name: kemejaId
+          in: path
+          required: true
+          description: The ID of the kemeja to return.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Deleted successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Kemeja deleted successfully
+        '404':
+          description: The kemeja failed to delete because the id does not exist.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Kemeja Id does not exist
+        default:
+          description: Unexpected error
   
-  /Keranjang:
+  /keranjangs:
     get:
+      tags: 
+        - Keranjang
       summary: Returns a list of keranjang.
       description: get all keranjang
       responses:
@@ -194,8 +416,14 @@ paths:
                 properties:
                   data:
                     type: array
-                    example: "haha"
+                    items:
+                      $ref: '#/components/schemas/Keranjang'
+        default:
+          description: Unexpected error
+
     post:
+      tags: 
+        - Keranjang
       summary: Add a new keranjang
       parameters:
         - name: userId
@@ -212,35 +440,40 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
+                  code:
                     type: integer
-                    format: int64
-                    example: 4
-    patch:
-      summary: Edit keranjang status
-      requestBody:
-        description: the status of keranjang
-        content:
-          application/json:
-            schema:
-              properties:
-                checked:
-                  type: boolean
-      responses:
-        '200':
-          description: Registered successfully.
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                          type: integer
+                          format: int64
+                          example: 4
+        '400':
+          description: One or both information are empty.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  id:
+                  code:
                     type: integer
-                    format: int64
-                    example: 4
+                    example: 400
+                  message:
+                    type: string
+                    example: bad request
+        default:
+          description: Unexpected error
+
     
-  /Keranjang/{keranjangId}:
+  /keranjang/{keranjangId}:
     get:
+      tags: 
+        - Keranjang
       summary: Returns a keranjang by ID.
       parameters:
         - name: keranjangId
@@ -272,6 +505,303 @@ paths:
           description: A kemeja with the specified ID was not found.
         default:
           description: Unexpected error
+
+    patch:
+      tags: 
+        - Keranjang
+      summary: Edit keranjang information.
+      parameters:
+        - name: keranjangId
+          in: path
+          required: true
+          description: The ID of the keranjang to return.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        required: true
+        description: request information for keranjang
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/Keranjang'
+      responses:
+        '200':
+          description: Edited successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Keranjang'
+        default:
+          description: Unexpected error
+    
+    delete:
+      tags: 
+        - Keranjang
+      summary: Delete a keranjang.
+      parameters:
+        - name: keranjangId
+          in: path
+          required: true
+          description: The ID of the keranjang to return.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Deleted successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Keranjang deleted successfully
+        '404':
+          description: The keranjang failed to delete because the id does not exist.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Keranjang Id does not exist
+        default:
+          description: Unexpected error
+  
+  /kemejakeranjangs:
+    get:
+      tags: 
+        - Kemeja keranjang
+      summary: Returns a list of kemeja keranjang.
+      description: get all kemeja keranjang
+      responses:
+        '200':    # status code
+          description: A JSON array of kemeja keranjang names
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/KemejaKeranjang'
+        default:
+          description: Unexpected error
+
+    post:
+      tags: 
+        - Kemeja keranjang
+      summary: Add a new kemeja keranjang
+      parameters:
+        - name: kemejaKeranjangId
+          in: path
+          required: true
+          description: The id of the kemeja keranjang
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Registered successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                          type: integer
+                          format: int64
+                          example: 4
+        '400':
+          description: One or both information are empty.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: bad request
+        default:
+          description: Unexpected error
+
+    
+  /Keranjang/{keranjangId}:
+    get:
+      tags: 
+        - Kemeja keranjang
+      summary: Returns a kemeja keranjang by ID.
+      parameters:
+        - name: kemejaKeranjangId
+          in: path
+          required: true
+          description: The ID of the kemeja keranjang to return.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: A kemeja keranjang object.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        '400':
+          description: The specified kemeja ID is invalid (not a number).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: bad request
+        '404':
+          description: A kemeja with the specified ID was not found.
+        default:
+          description: Unexpected error
+
+    patch:
+      tags: 
+        - Kemeja keranjang
+      summary: Edit kemeja keranjang information.
+      parameters:
+        - name: kemejaKeranjangId
+          in: path
+          required: true
+          description: The ID of the kemeja keranjang to return.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      requestBody:
+        required: true
+        description: request information for kemeja keranjang
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/KemejaKeranjang'
+      responses:
+        '200':
+          description: Edited successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/KemejaKeranjang'
+        default:
+          description: Unexpected error
+    
+    delete:
+      tags: 
+        - Kemeja keranjang
+      summary: Delete a kemeja keranjang.
+      parameters:
+        - name: kemejaKeranjangId
+          in: path
+          required: true
+          description: The ID of the kemeja keranjang to return.
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Deleted successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: Kemeja keranjang deleted successfully
+        '404':
+          description: The kemeja keranjang failed to delete because the id does not exist.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: Kemeja keranjang Id does not exist
+        default:
+          description: Unexpected error
+
 
 components:
   schemas:
@@ -323,7 +853,7 @@ components:
           type: integer
         checked:
           type: boolean
-    Kemeja_keranjang:
+    KemejaKeranjang:
       type: object
       properties:
         kemejaId:

@@ -1,7 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"kemejaku/configs"
+	"kemejaku/routes"
+)
 
 func main() {
-	fmt.Println("Hello World!")
+	configs.ConnectDb()
+	e := routes.New()
+	e.Start(":8000")
 }
