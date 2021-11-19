@@ -4,7 +4,6 @@ import (
 	"kemejaku/configs"
 	"kemejaku/models/keranjangs"
 	"kemejaku/models/responses"
-	"kemejaku/models/users"
 	"net/http"
 	"strconv"
 
@@ -18,7 +17,7 @@ func InsertKeranjangController(c echo.Context) error {
 	if keranjang.UserId == 0 {
 		return c.JSON(http.StatusBadRequest, responses.BaseResponse{
 			http.StatusBadRequest,
-			"User Id Kosong",
+			"Keranjang Id Kosong",
 			nil,
 		})
 	}
@@ -57,9 +56,9 @@ func GetDetailKeranjangController(c echo.Context) error {
 		})
 	}
 
-	var data = users.User{}
+	var data = keranjangs.Keranjang{}
 
-	configs.DB.First(&data, keranjangId)
+	configs.DB.Preload("KemejaKeranjang").First(&data, keranjangId)
 
 	var response = responses.BaseResponse{
 		http.StatusOK,
@@ -72,7 +71,7 @@ func GetDetailKeranjangController(c echo.Context) error {
 func GetAllKeranjangController(c echo.Context) error {
 	var keranjangs []keranjangs.Keranjang
 
-	result := configs.DB.Find(&keranjangs)
+	result := configs.DB.Preload("KemejaKeranjang").Find(&keranjangs)
 
 	if result.Error != nil {
 		return c.JSON(http.StatusInternalServerError, responses.BaseResponse{
@@ -100,12 +99,12 @@ func EditKeranjangController(c echo.Context) error {
 	if keranjangId == 0 {
 		return c.JSON(http.StatusBadRequest, responses.BaseResponse{
 			http.StatusBadRequest,
-			"User Id kosong",
+			"Keranjang Id kosong",
 			nil,
 		})
 	}
 
-	configs.DB.First(&newKeranjang, keranjangId)
+	configs.DB.Preload("KemejaKeranjang").First(&newKeranjang, keranjangId)
 
 	newKeranjang.Status = keranjang.Status
 
@@ -123,12 +122,12 @@ func EditKeranjangController(c echo.Context) error {
 func DeleteKeranjangController(c echo.Context) error {
 	keranjangId, _ := strconv.Atoi(c.Param("keranjangId"))
 
-	var data = users.User{}
+	var data = keranjangs.Keranjang{}
 
 	if keranjangId == 0 {
 		return c.JSON(http.StatusBadRequest, responses.BaseResponse{
 			http.StatusBadRequest,
-			"User Id Kosong",
+			"Keranjang Id Kosong",
 			nil,
 		})
 	}

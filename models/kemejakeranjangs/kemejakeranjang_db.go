@@ -7,12 +7,14 @@ import (
 )
 
 type KemejaKeranjang struct {
-	IdKemeja    int            `gorm:"primaryKey;unique" json:"idKemeja"`
-	IdKeranjang int            `gorm:"primaryKey;unique" json:"idKeranjang"`
-	Jumlah      int            `json:"jumlah"`
-	Size        int            `json:"size"`
-	CreatedAt   time.Time      `gorm:"autoCreateTime" json:"createdAt"`
-	UpdatedAt   time.Time      `gorm:"autoUpdateTime" json:"updatedAt"`
-	DeletedAt   gorm.DeletedAt `gorm"index" json:"deletedAt"`
-	//News []news.News //one to many
+	Id          int    `gorm:"primaryKey;unique;autoIncrement:true" json:"id"`
+	IdKemeja    int    `json:"idKemeja"`
+	IdKeranjang int    `json:"idKeranjang"`
+	Jumlah      int    `json:"jumlah"`
+	Size        string `json:"size"`
+	// Keranjang   keranjangs.Keranjang `gorm:"foreignKey:IdKeranjang"`
+	// Kemeja      kemejas.Kemeja       `gorm:"foreignKey:IdKemeja"`
+	CreatedAt time.Time      `gorm:"autoCreateTime" json:"createdAt"`
+	UpdatedAt time.Time      `gorm:"autoUpdateTime" json:"updatedAt"`
+	DeletedAt gorm.DeletedAt `gorm"index" json:"deletedAt"`
 }

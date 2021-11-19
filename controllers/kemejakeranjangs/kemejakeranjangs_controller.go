@@ -4,7 +4,6 @@ import (
 	"kemejaku/configs"
 	"kemejaku/models/kemejakeranjangs"
 	"kemejaku/models/responses"
-	"kemejaku/models/users"
 	"net/http"
 	"strconv"
 
@@ -39,7 +38,7 @@ func InsertKemejaKeranjangController(c echo.Context) error {
 		})
 	}
 
-	if kemejakeranjang.Size == 0 {
+	if kemejakeranjang.Size == "" {
 		return c.JSON(http.StatusBadRequest, responses.BaseResponse{
 			http.StatusBadRequest,
 			"Size Kosong",
@@ -68,28 +67,19 @@ func InsertKemejaKeranjangController(c echo.Context) error {
 
 func GetDetailKemejaKeranjangController(c echo.Context) error {
 	//mengambil parameter dengan key yang sama
-	kemejaId, _ := strconv.Atoi(c.Param("kemejaId"))
-	keranjangId, _ := strconv.Atoi(c.Param("keranjangId"))
+	id, _ := strconv.Atoi(c.Param("kemejaKeranjangId"))
 
-	if kemejaId == 0 {
+	if id == 0 {
 		return c.JSON(http.StatusBadRequest, responses.BaseResponse{
 			http.StatusBadRequest,
-			"Kemeja Id Kosong",
+			"Kemeja keranjang Id Kosong",
 			nil,
 		})
 	}
 
-	if keranjangId == 0 {
-		return c.JSON(http.StatusBadRequest, responses.BaseResponse{
-			http.StatusBadRequest,
-			"Keranjang Id Kosong",
-			nil,
-		})
-	}
+	var data = kemejakeranjangs.KemejaKeranjang{}
 
-	var data = users.User{}
-
-	configs.DB.First(&data, kemejaId, keranjangId)
+	configs.DB.First(&data, id)
 
 	var response = responses.BaseResponse{
 		http.StatusOK,
@@ -124,28 +114,20 @@ func GetAllKemejaKeranjangController(c echo.Context) error {
 func EditKemejaKeranjangController(c echo.Context) error {
 	var kemejakeranjang kemejakeranjangs.KemejaKeranjang
 	var newKemejakeranjang kemejakeranjangs.KemejaKeranjang
-	kemejaId, _ := strconv.Atoi(c.Param("kemejaId"))
-	keranjangId, _ := strconv.Atoi(c.Param("keranjangId"))
+	id, _ := strconv.Atoi(c.Param("kemejaKeranjangId"))
 	c.Bind(&kemejakeranjang)
 
-	if kemejaId == 0 {
+	if id == 0 {
 		return c.JSON(http.StatusBadRequest, responses.BaseResponse{
 			http.StatusBadRequest,
-			"Kemeja Id Kosong",
+			"Kemeja keranjang Id Kosong",
 			nil,
 		})
 	}
 
-	if keranjangId == 0 {
-		return c.JSON(http.StatusBadRequest, responses.BaseResponse{
-			http.StatusBadRequest,
-			"Keranjang Id Kosong",
-			nil,
-		})
-	}
+	configs.DB.First(&newKemejakeranjang, id)
 
-	configs.DB.First(&newKemejakeranjang, kemejaId, keranjangId)
-
+	//kurang yang bagian dulu
 	if kemejakeranjang.Jumlah == 0 {
 		return c.JSON(http.StatusBadRequest, responses.BaseResponse{
 			http.StatusBadRequest,
@@ -154,6 +136,16 @@ func EditKemejaKeranjangController(c echo.Context) error {
 		})
 	} else {
 		newKemejakeranjang.Jumlah = kemejakeranjang.Jumlah
+	}
+
+	if kemejakeranjang.Size == "" {
+		return c.JSON(http.StatusBadRequest, responses.BaseResponse{
+			http.StatusBadRequest,
+			"Jumlah Kosong",
+			nil,
+		})
+	} else {
+		newKemejakeranjang.Size = kemejakeranjang.Size
 	}
 
 	configs.DB.Save(&newKemejakeranjang)
@@ -168,28 +160,19 @@ func EditKemejaKeranjangController(c echo.Context) error {
 }
 
 func DeleteKemejaKeranjangController(c echo.Context) error {
-	kemejaId, _ := strconv.Atoi(c.Param("kemejaId"))
-	keranjangId, _ := strconv.Atoi(c.Param("keranjangId"))
+	id, _ := strconv.Atoi(c.Param("kemejaKeranjangId"))
 
 	var kemejakeranjang = kemejakeranjangs.KemejaKeranjang{}
 
-	if kemejaId == 0 {
+	if id == 0 {
 		return c.JSON(http.StatusBadRequest, responses.BaseResponse{
 			http.StatusBadRequest,
-			"Kemeja Id Kosong",
+			"Kemeja keranjang Id Kosong",
 			nil,
 		})
 	}
 
-	if keranjangId == 0 {
-		return c.JSON(http.StatusBadRequest, responses.BaseResponse{
-			http.StatusBadRequest,
-			"Keranjang Id Kosong",
-			nil,
-		})
-	}
-
-	configs.DB.Delete(&kemejakeranjang, kemejaId, keranjangId)
+	configs.DB.Delete(&kemejakeranjang, id)
 
 	var response = responses.BaseResponse{
 		http.StatusOK,

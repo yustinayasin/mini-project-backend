@@ -56,11 +56,11 @@ func New() *echo.Echo {
 
 	eKemejaKeranjang.Use(middleware.JWTWithConfig(config))
 
-	eKemejaKeranjang.GET("/:kemejaId/keranjangId", kemejakeranjangs.GetDetailKemejaKeranjangController)
+	eKemejaKeranjang.GET("/:kemejaKeranjangId", kemejakeranjangs.GetDetailKemejaKeranjangController)
 	e.GET("/kemejakeranjangs", kemejakeranjangs.GetAllKemejaKeranjangController)
 	e.POST("/kemejakeranjangs", kemejakeranjangs.InsertKemejaKeranjangController)
-	eKemejaKeranjang.PUT("/:kemejaId/keranjangId", kemejakeranjangs.EditKemejaKeranjangController)
-	eKemejaKeranjang.DELETE("/:kemejaId/keranjangId", kemejakeranjangs.DeleteKemejaKeranjangController)
+	eKemejaKeranjang.PUT("/:kemejaKeranjangId", kemejakeranjangs.EditKemejaKeranjangController)
+	eKemejaKeranjang.DELETE("/:kemejaKeranjangId", kemejakeranjangs.DeleteKemejaKeranjangController)
 
 	return e
 }
