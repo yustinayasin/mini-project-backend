@@ -2,18 +2,21 @@ package keranjangs
 
 import (
 	"context"
+	"kemejaku/business/kemejakeranjangs"
 	"time"
 )
 
 type KeranjangUsecase struct {
-	repo KeranjangRepoInterface
-	ctx  time.Duration
+	repo                KeranjangRepoInterface
+	repoKemejaKeranjang kemejakeranjangs.KemejaKeranjangRepoInterface
+	ctx                 time.Duration
 }
 
-func NewKeranjangUcecase(kRepo KeranjangRepoInterface, contextTimeout time.Duration) KeranjangUseCaseInterface {
+func NewKeranjangUcecase(kRepo KeranjangRepoInterface, kkRepo kemejakeranjangs.KemejaKeranjangRepoInterface, contextTimeout time.Duration) KeranjangUseCaseInterface {
 	return &KeranjangUsecase{
-		repo: kRepo,
-		ctx:  contextTimeout,
+		repo:                kRepo,
+		repoKemejaKeranjang: kkRepo,
+		ctx:                 contextTimeout,
 	}
 }
 
