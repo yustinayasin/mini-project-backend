@@ -51,7 +51,7 @@ func (controller *KemejaKeranjangController) InsertKemejaKeranjang(c echo.Contex
 	user, errRepo := controller.usecase.InsertKemejaKeranjang(*kk.ToUsecase(), ctx)
 
 	if errRepo != nil {
-		return controllers.ErrorResponse(c, http.StatusNotFound, "Email and password doesn't match", errRepo)
+		return controllers.ErrorResponse(c, http.StatusNotFound, "Failed to insert new kemeja keranjang", errRepo)
 	}
 
 	return controllers.SuccessResponse(c, response.FromUsecase(user))
@@ -63,7 +63,7 @@ func (controller *KemejaKeranjangController) GetAllKemejaKeranjang(c echo.Contex
 	kk, errRepo := controller.usecase.GetAllKemejaKeranjang(ctx)
 
 	if errRepo != nil {
-		return controllers.ErrorResponse(c, http.StatusNotFound, "There is no user column", errRepo)
+		return controllers.ErrorResponse(c, http.StatusNotFound, "There is no kemeja keranjang column", errRepo)
 	}
 
 	return controllers.SuccessResponse(c, response.FromUsecaseList(kk))
