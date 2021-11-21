@@ -17,7 +17,7 @@ type Kemeja struct {
 	Stock_S   int
 	CreatedAt time.Time      `gorm:"autoCreateTime"`
 	UpdatedAt time.Time      `gorm:"autoUpdateTime"`
-	DeletedAt gorm.DeletedAt `gorm"index"`
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
 func (kemeja Kemeja) ToUsecase() kemejas.Kemeja {

@@ -3,15 +3,15 @@ package request
 import "kemejaku/business/kemejakeranjangs"
 
 type KemejaKeranjangInsert struct {
-	IdKemeja    int    `json:idKemeja`
-	IdKeranjang int    `json:idKeranjang`
-	Jumlah      int    `json:jumlah`
-	Size        string `json:size`
+	IdKemeja    int    `json:"idKemeja"`
+	IdKeranjang int    `json:"idKeranjang"`
+	Jumlah      int    `json:"jumlah"`
+	Size        string `json:"size"`
 }
 
 type KemejaKeranjangEdit struct {
-	Jumlah int    `json:jumlah`
-	Size   string `json:size`
+	Jumlah int    `json:"jumlah"`
+	Size   string `json:"size"`
 }
 
 func (kk *KemejaKeranjangInsert) ToUsecase() *kemejakeranjangs.KemejaKeranjang {

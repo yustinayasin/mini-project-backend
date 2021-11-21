@@ -15,7 +15,7 @@ type Keranjang struct {
 	KemejaKeranjang []kemejakeranjangs.KemejaKeranjang
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
-	DeletedAt       gorm.DeletedAt `gorm"index"`
+	DeletedAt       gorm.DeletedAt `gorm:"index"`
 }
 
 type KeranjangUseCaseInterface interface {

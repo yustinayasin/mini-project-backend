@@ -17,7 +17,7 @@ type KemejaKeranjang struct {
 	// Kemeja      kemejas.Kemeja       `gorm:"foreignKey:IdKemeja"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm"index"`
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
 //ini interface antara controller dan usecase

@@ -3,12 +3,12 @@ package request
 import "kemejaku/business/kemejas"
 
 type Kemeja struct {
-	Nama      string `json:nama`
-	Deskripsi string `json:deskripsi`
-	Harga     int    `json:harga`
-	Stock_L   int    `json:stock_L`
-	Stock_M   int    `json:stock_M`
-	Stock_S   int    `json:stock_S`
+	Nama      string `json:"nama"`
+	Deskripsi string `json:"deskripsi"`
+	Harga     int    `json:"harga"`
+	Stock_L   int    `json:"stock_L"`
+	Stock_M   int    `json:"stock_M"`
+	Stock_S   int    `json:"stock_S"`
 }
 
 func (kemeja *Kemeja) ToUsecase() *kemejas.Kemeja {

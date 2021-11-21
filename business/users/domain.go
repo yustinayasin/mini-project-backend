@@ -19,7 +19,7 @@ type User struct {
 	PostalCode  string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
-	DeletedAt   gorm.DeletedAt `gorm"index"`
+	DeletedAt   gorm.DeletedAt `gorm:"index"`
 	Token       string
 }
 

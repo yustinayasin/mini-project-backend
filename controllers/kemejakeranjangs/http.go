@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"kemejaku/business/kemejakeranjangs"
 	"kemejaku/controllers"
 	"kemejaku/controllers/kemejakeranjangs/request"
@@ -72,13 +73,15 @@ func (controller *KemejaKeranjangController) GetAllKemejaKeranjang(c echo.Contex
 func (controller *KemejaKeranjangController) GetKemejaKeranjangDetail(c echo.Context) error {
 	ctx := c.Request().Context()
 
-	kkId, _ := strconv.Atoi(c.Param("kkId"))
+	kemejaKeranjangId, _ := strconv.Atoi(c.Param("kemejaKeranjangId"))
 
-	if kkId == 0 {
+	fmt.Println(kemejaKeranjangId)
+
+	if kemejaKeranjangId == 0 {
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja keranjang ID empty")
 	}
 
-	kk, errRepo := controller.usecase.GetKemejaKeranjangDetail(kkId, ctx)
+	kk, errRepo := controller.usecase.GetKemejaKeranjangDetail(kemejaKeranjangId, ctx)
 
 	if errRepo != nil {
 		return controllers.ErrorResponse(c, http.StatusNotFound, "Kemeja keranjang not found", errRepo)
@@ -91,14 +94,14 @@ func (controller *KemejaKeranjangController) EditKemejaKeranjang(c echo.Context)
 	ctx := c.Request().Context()
 
 	var kk request.KemejaKeranjangEdit
-	kkId, _ := strconv.Atoi(c.Param("kkId"))
+	kemejaKeranjangId, _ := strconv.Atoi(c.Param("kemejaKeranjangId"))
 	err := c.Bind(&kk)
 
 	if err != nil {
 		return controllers.ErrorResponse(c, http.StatusInternalServerError, "Error binding", err)
 	}
 
-	if kkId == 0 {
+	if kemejaKeranjangId == 0 {
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja keranjang ID empty")
 	}
 
@@ -110,7 +113,7 @@ func (controller *KemejaKeranjangController) EditKemejaKeranjang(c echo.Context)
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Size empty")
 	}
 
-	kkRepo, errRepo := controller.usecase.EditKemejaKeranjang(*kk.ToUsecase(), kkId, ctx)
+	kkRepo, errRepo := controller.usecase.EditKemejaKeranjang(*kk.ToUsecase(), kemejaKeranjangId, ctx)
 
 	if errRepo != nil {
 		return controllers.ErrorResponse(c, http.StatusNotFound, "Kemeja keranjang not found", errRepo)
@@ -122,13 +125,13 @@ func (controller *KemejaKeranjangController) EditKemejaKeranjang(c echo.Context)
 func (controller *KemejaKeranjangController) DeleteKemejaKeranjang(c echo.Context) error {
 	ctx := c.Request().Context()
 
-	kkId, _ := strconv.Atoi(c.Param("kkId"))
+	kemejaKeranjangId, _ := strconv.Atoi(c.Param("kemejaKeranjangId"))
 
-	if kkId == 0 {
+	if kemejaKeranjangId == 0 {
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja keranjang ID empty")
 	}
 
-	kk, errRepo := controller.usecase.DeleteKemejaKeranjang(kkId, ctx)
+	kk, errRepo := controller.usecase.DeleteKemejaKeranjang(kemejaKeranjangId, ctx)
 
 	if errRepo != nil {
 		return controllers.ErrorResponse(c, http.StatusNotFound, "Kemeja keranjang not found", errRepo)

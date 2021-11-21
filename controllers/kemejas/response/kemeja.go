@@ -17,11 +17,12 @@ type KemejaResponse struct {
 	Stock_S   int            `json:"stock_S"`
 	CreatedAt time.Time      `json:"createdAt"`
 	UpdatedAt time.Time      `json:"updatedAt"`
-	DeletedAt gorm.DeletedAt `gorm"index" json:"deletedAt"`
+	DeletedAt gorm.DeletedAt `gorm:"index" json:"deletedAt"`
 }
 
 func FromUsecase(kemeja kemejas.Kemeja) KemejaResponse {
 	return KemejaResponse{
+		Id:        kemeja.Id,
 		Nama:      kemeja.Nama,
 		Deskripsi: kemeja.Deskripsi,
 		Harga:     kemeja.Harga,

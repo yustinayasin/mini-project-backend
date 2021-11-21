@@ -17,7 +17,7 @@ type Kemeja struct {
 	Stock_S   int
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm"index"`
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
 //ini interface antara controller dan usecase

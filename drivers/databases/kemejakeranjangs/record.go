@@ -17,7 +17,7 @@ type KemejaKeranjang struct {
 	// Kemeja      kemejas.Kemeja       `gorm:"foreignKey:IdKemeja"`
 	CreatedAt time.Time      `gorm:"autoCreateTime"`
 	UpdatedAt time.Time      `gorm:"autoUpdateTime"`
-	DeletedAt gorm.DeletedAt `gorm"index"`
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
 func (kk KemejaKeranjang) ToUsecase() kemejakeranjangs.KemejaKeranjang {

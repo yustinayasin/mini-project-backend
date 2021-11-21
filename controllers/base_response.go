@@ -10,13 +10,13 @@ type BaseResponse struct {
 	Status   int         `json:"status"`
 	Message  string      `json:"message"`
 	Messages []string    `json:"messages"`
-	Data     interface{} `json:data`
+	Data     interface{} `json:"data"`
 }
 
 type BaseWithoutMessages struct {
 	Status  int         `json:"status"`
 	Message string      `json:"message"`
-	Data    interface{} `json:data`
+	Data    interface{} `json:"data"`
 }
 
 func ErrorResponseWithoutMessages(c echo.Context, status int, message string) error {

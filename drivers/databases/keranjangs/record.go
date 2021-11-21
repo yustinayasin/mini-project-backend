@@ -15,7 +15,7 @@ type Keranjang struct {
 	KemejaKeranjang []kemejakeranjangs.KemejaKeranjang `gorm:"foreignKey:IdKeranjang"`
 	CreatedAt       time.Time                          `gorm:"autoCreateTime"`
 	UpdatedAt       time.Time                          `gorm:"autoUpdateTime"`
-	DeletedAt       gorm.DeletedAt                     `gorm"index"`
+	DeletedAt       gorm.DeletedAt                     `gorm:"index"`
 }
 
 func (keranjang Keranjang) ToUsecase() keranjangs.Keranjang {

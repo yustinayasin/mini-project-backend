@@ -18,7 +18,7 @@ type User struct {
 	PostalCode  string
 	CreatedAt   time.Time      `gorm:"autoCreateTime"`
 	UpdatedAt   time.Time      `gorm:"autoUpdateTime"`
-	DeletedAt   gorm.DeletedAt `gorm"index"`
+	DeletedAt   gorm.DeletedAt `gorm:"index"`
 }
 
 func (user User) ToUsecase() users.User {

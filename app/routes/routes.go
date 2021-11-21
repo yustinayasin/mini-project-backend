@@ -49,9 +49,9 @@ func (controller RouteControllerList) RouteRegister(e *echo.Echo) {
 
 	eKemeja := e.Group("/kemeja")
 
-	eKemeja.GET("/:kemejaKeranjangId", controller.KemejaController.GetKemejaDetail)
-	e.GET("/kemejakeranjangs", controller.KemejaController.GetAllKemeja)
-	e.POST("/kemejakeranjangs", controller.KemejaController.InsertKemeja)
-	eKemeja.PUT("/:kemejaKeranjangId", controller.KemejaController.EditKemeja)
-	eKemeja.DELETE("/:kemejaKeranjangId", controller.KemejaController.DeleteKemeja)
+	eKemeja.GET("/:kemejaId", controller.KemejaController.GetKemejaDetail)
+	e.GET("/kemejas", controller.KemejaController.GetAllKemeja)
+	e.POST("/kemejas", controller.KemejaController.InsertKemeja)
+	eKemeja.PUT("/:kemejaId", controller.KemejaController.EditKemeja)
+	eKemeja.DELETE("/:kemejaId", controller.KemejaController.DeleteKemeja)
 }

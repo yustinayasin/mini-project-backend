@@ -9,10 +9,10 @@ import (
 
 type KemejaKeranjangResponse struct {
 	Id          int            `json:"id"`
-	IdKemeja    int            `json:idKemeja`
-	IdKeranjang int            `json:idKeranjang`
-	Jumlah      int            `json:jumlah`
-	Size        string         `json:size`
+	IdKemeja    int            `json:"idKemeja"`
+	IdKeranjang int            `json:"idKeranjang"`
+	Jumlah      int            `json:"jumlah"`
+	Size        string         `json:"size"`
 	CreatedAt   time.Time      `json:"createdAt"`
 	UpdatedAt   time.Time      `json:"updatedAt"`
 	DeletedAt   gorm.DeletedAt `json:"deletedAt"`
