@@ -76,17 +76,17 @@ func main() {
 	userUseCaseInterface := userUsecase.NewUseCase(userRepoInterface, timeoutContext)
 	userControllerInterface := userController.NewUserController(userUseCaseInterface)
 
+	kemejaKeranjangRepoInterface := kemejaKeranjangRepo.NewKemejaKeranjangRepo(db)
+	kemejaKeranjangUseCaseInterface := kemejaKeranjangUsecase.NewKemejaKeranjangUsecase(kemejaKeranjangRepoInterface, timeoutContext)
+	kemejaKeranjangControllerInterface := kemejaKeranjangController.NewKemejaKeranjangController(kemejaKeranjangUseCaseInterface)
+
 	keranjangRepoInterface := keranjangRepo.NewKeranjangRepo(db)
-	keranjangUseCaseInterface := keranjangUsecase.NewKeranjangUcecase(keranjangRepoInterface, timeoutContext)
+	keranjangUseCaseInterface := keranjangUsecase.NewKeranjangUcecase(keranjangRepoInterface, kemejaKeranjangRepoInterface, timeoutContext)
 	keranjangControllerInterface := keranjangController.NewKeranjangController(keranjangUseCaseInterface)
 
 	kemejaRepoInterface := kemejaRepo.NewKemejaRepo(db)
 	kemejaUseCaseInterface := kemejaUsecase.NewKemejaUsecase(kemejaRepoInterface, timeoutContext)
 	kemejaControllerInterface := kemejaController.NewKemejaController(kemejaUseCaseInterface)
-
-	kemejaKeranjangRepoInterface := kemejaKeranjangRepo.NewKemejaKeranjangRepo(db)
-	kemejaKeranjangUseCaseInterface := kemejaKeranjangUsecase.NewKemejaKeranjangUsecase(kemejaKeranjangRepoInterface, timeoutContext)
-	kemejaKeranjangControllerInterface := kemejaKeranjangController.NewKemejaKeranjangController(kemejaKeranjangUseCaseInterface)
 
 	routesInit := routes.RouteControllerList{
 		UserController:            *userControllerInterface,
