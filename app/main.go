@@ -2,10 +2,24 @@ package main
 
 import (
 	"kemejaku/app/routes"
+
 	userUsecase "kemejaku/business/users"
 	userController "kemejaku/controllers/users"
-	"kemejaku/drivers/databases/mysql"
 	userRepo "kemejaku/drivers/databases/users"
+
+	keranjangUsecase "kemejaku/business/keranjangs"
+	keranjangController "kemejaku/controllers/keranjangs"
+	keranjangRepo "kemejaku/drivers/databases/keranjangs"
+
+	kemejaKeranjangUsecase "kemejaku/business/kemejakeranjangs"
+	kemejaKeranjangController "kemejaku/controllers/kemejakeranjangs"
+	kemejaKeranjangRepo "kemejaku/drivers/databases/kemejakeranjangs"
+
+	kemejaUsecase "kemejaku/business/kemejas"
+	kemejaController "kemejaku/controllers/kemejas"
+	kemejaRepo "kemejaku/drivers/databases/kemejas"
+
+	"kemejaku/drivers/databases/mysql"
 	"log"
 	"time"
 
@@ -29,7 +43,12 @@ func init() {
 }
 
 func dbMigrate(db *gorm.DB) {
-	db.AutoMigrate(&userRepo.User{})
+	db.AutoMigrate(
+		&userRepo.User{},
+		&keranjangRepo.Keranjang{},
+		&kemejaKeranjangRepo.KemejaKeranjang{},
+		&kemejaRepo.Kemeja{},
+	)
 }
 
 func main() {
@@ -57,8 +76,23 @@ func main() {
 	userUseCaseInterface := userUsecase.NewUseCase(userRepoInterface, timeoutContext)
 	userControllerInterface := userController.NewUserController(userUseCaseInterface)
 
+	keranjangRepoInterface := keranjangRepo.NewKeranjangRepo(db)
+	keranjangUseCaseInterface := keranjangUsecase.NewKeranjangUcecase(keranjangRepoInterface, timeoutContext)
+	keranjangControllerInterface := keranjangController.NewKeranjangController(keranjangUseCaseInterface)
+
+	kemejaRepoInterface := kemejaRepo.NewKemejaRepo(db)
+	kemejaUseCaseInterface := kemejaUsecase.NewKemejaUsecase(kemejaRepoInterface, timeoutContext)
+	kemejaControllerInterface := kemejaController.NewKemejaController(kemejaUseCaseInterface)
+
+	kemejaKeranjangRepoInterface := kemejaKeranjangRepo.NewKemejaKeranjangRepo(db)
+	kemejaKeranjangUseCaseInterface := kemejaKeranjangUsecase.NewKemejaKeranjangUsecase(kemejaKeranjangRepoInterface, timeoutContext)
+	kemejaKeranjangControllerInterface := kemejaKeranjangController.NewKemejaKeranjangController(kemejaKeranjangUseCaseInterface)
+
 	routesInit := routes.RouteControllerList{
-		UserController: *userControllerInterface,
+		UserController:            *userControllerInterface,
+		KeranjangController:       *keranjangControllerInterface,
+		KemejaController:          *kemejaControllerInterface,
+		KemejaKeranjangController: *kemejaKeranjangControllerInterface,
 		// JWTConfig:      jwt.Init(),
 	}
 
