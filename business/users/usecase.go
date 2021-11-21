@@ -24,7 +24,7 @@ func NewUseCase(userRepo UserRepoInterface, contextTimeout time.Duration) UserUs
 }
 
 //fungsi harus menempel pada struct
-func (userUseCase *UserUseCase) LoginController(user User, ctx context.Context) (User, error) {
+func (userUseCase *UserUseCase) Login(user User, ctx context.Context) (User, error) {
 	// if user.Email == "" {
 	// 	return User{}, errors.New("Email Empty")
 	// }
@@ -34,7 +34,7 @@ func (userUseCase *UserUseCase) LoginController(user User, ctx context.Context) 
 	// }
 
 	//menghubungkan ke repo
-	userRepo, err := userUseCase.repo.LoginController(user, ctx)
+	userRepo, err := userUseCase.repo.Login(user, ctx)
 
 	if err != nil {
 		return User{}, err
@@ -43,8 +43,8 @@ func (userUseCase *UserUseCase) LoginController(user User, ctx context.Context) 
 	return userRepo, nil
 }
 
-func (userUseCase *UserUseCase) GetAllUsersController(ctx context.Context) ([]User, error) {
-	userRepo, err := userUseCase.repo.GetAllUsersController(ctx)
+func (userUseCase *UserUseCase) GetAllUsers(ctx context.Context) ([]User, error) {
+	userRepo, err := userUseCase.repo.GetAllUsers(ctx)
 
 	if err != nil {
 		return []User{}, err
@@ -53,8 +53,8 @@ func (userUseCase *UserUseCase) GetAllUsersController(ctx context.Context) ([]Us
 	return userRepo, nil
 }
 
-func (userUseCase *UserUseCase) SignUpController(user User, ctx context.Context) (User, error) {
-	userRepo, err := userUseCase.repo.SignUpController(user, ctx)
+func (userUseCase *UserUseCase) SignUp(user User, ctx context.Context) (User, error) {
+	userRepo, err := userUseCase.repo.SignUp(user, ctx)
 
 	if err != nil {
 		return User{}, err
@@ -63,8 +63,8 @@ func (userUseCase *UserUseCase) SignUpController(user User, ctx context.Context)
 	return userRepo, nil
 }
 
-func (userUseCase *UserUseCase) GetDetailUserController(id int, ctx context.Context) (User, error) {
-	userRepo, err := userUseCase.repo.GetDetailUserController(id, ctx)
+func (userUseCase *UserUseCase) GetUserDetail(id int, ctx context.Context) (User, error) {
+	userRepo, err := userUseCase.repo.GetUserDetail(id, ctx)
 
 	if err != nil {
 		return User{}, err
@@ -73,8 +73,8 @@ func (userUseCase *UserUseCase) GetDetailUserController(id int, ctx context.Cont
 	return userRepo, nil
 }
 
-func (userUseCase *UserUseCase) EditUserController(user User, id int, ctx context.Context) (User, error) {
-	userRepo, err := userUseCase.repo.EditUserController(user, id, ctx)
+func (userUseCase *UserUseCase) EditUser(user User, id int, ctx context.Context) (User, error) {
+	userRepo, err := userUseCase.repo.EditUser(user, id, ctx)
 
 	if err != nil {
 		return User{}, err
@@ -83,8 +83,8 @@ func (userUseCase *UserUseCase) EditUserController(user User, id int, ctx contex
 	return userRepo, nil
 }
 
-func (userUseCase *UserUseCase) DeleteUserController(id int, ctx context.Context) (User, error) {
-	userRepo, err := userUseCase.repo.DeleteUserController(id, ctx)
+func (userUseCase *UserUseCase) DeleteUser(id int, ctx context.Context) (User, error) {
+	userRepo, err := userUseCase.repo.DeleteUser(id, ctx)
 
 	if err != nil {
 		return User{}, err

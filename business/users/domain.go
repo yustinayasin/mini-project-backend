@@ -26,20 +26,20 @@ type User struct {
 //ini interface antara controller dan usecase
 type UserUseCaseInterface interface {
 	//perlu konteks biar ada timeout
-	LoginController(user User, ctx context.Context) (User, error)
-	GetAllUsersController(ctx context.Context) ([]User, error)
-	SignUpController(user User, ctx context.Context) (User, error)
-	GetDetailUserController(id int, ctx context.Context) (User, error)
-	EditUserController(user User, id int, ctx context.Context) (User, error)
-	DeleteUserController(id int, ctx context.Context) (User, error)
+	Login(user User, ctx context.Context) (User, error)
+	GetAllUsers(ctx context.Context) ([]User, error)
+	SignUp(user User, ctx context.Context) (User, error)
+	GetUserDetail(id int, ctx context.Context) (User, error)
+	EditUser(user User, id int, ctx context.Context) (User, error)
+	DeleteUser(id int, ctx context.Context) (User, error)
 }
 
 //ini interface antara usecase dan repo
 type UserRepoInterface interface {
-	LoginController(user User, ctx context.Context) (User, error)
-	GetAllUsersController(ctx context.Context) ([]User, error)
-	SignUpController(user User, ctx context.Context) (User, error)
-	GetDetailUserController(id int, ctx context.Context) (User, error)
-	EditUserController(user User, id int, ctx context.Context) (User, error)
-	DeleteUserController(id int, ctx context.Context) (User, error)
+	Login(user User, ctx context.Context) (User, error)
+	GetAllUsers(ctx context.Context) ([]User, error)
+	SignUp(user User, ctx context.Context) (User, error)
+	GetUserDetail(id int, ctx context.Context) (User, error)
+	EditUser(user User, id int, ctx context.Context) (User, error)
+	DeleteUser(id int, ctx context.Context) (User, error)
 }

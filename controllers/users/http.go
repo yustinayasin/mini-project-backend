@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"kemejaku/business/users"
 	"kemejaku/controllers"
 	"kemejaku/controllers/users/request"
@@ -23,7 +22,7 @@ func NewUserController(uc users.UserUseCaseInterface) *UserController {
 	}
 }
 
-func (controller *UserController) LoginController(c echo.Context) error {
+func (controller *UserController) Login(c echo.Context) error {
 	ctx := c.Request().Context()
 
 	//dari request
@@ -44,7 +43,7 @@ func (controller *UserController) LoginController(c echo.Context) error {
 	}
 
 	//error apa ni
-	user, errRepo := controller.usecase.LoginController(*userLogin.ToUsecase(), ctx)
+	user, errRepo := controller.usecase.Login(*userLogin.ToUsecase(), ctx)
 
 	if errRepo != nil {
 		return controllers.ErrorResponse(c, http.StatusNotFound, "There is no account with that password and email", errRepo)
@@ -53,10 +52,10 @@ func (controller *UserController) LoginController(c echo.Context) error {
 	return controllers.SuccessResponse(c, response.FromUsecase(user))
 }
 
-func (controller *UserController) GetAllUsersController(c echo.Context) error {
+func (controller *UserController) GetAllUsers(c echo.Context) error {
 	ctx := c.Request().Context()
 
-	user, errRepo := controller.usecase.GetAllUsersController(ctx)
+	user, errRepo := controller.usecase.GetAllUsers(ctx)
 
 	if errRepo != nil {
 		return controllers.ErrorResponse(c, http.StatusNotFound, "There is no user column", errRepo)
@@ -65,14 +64,12 @@ func (controller *UserController) GetAllUsersController(c echo.Context) error {
 	return controllers.SuccessResponse(c, response.FromUsecaseList(user))
 }
 
-func (controller *UserController) SignUpController(c echo.Context) error {
+func (controller *UserController) SignUp(c echo.Context) error {
 	ctx := c.Request().Context()
 
 	var userSignup request.UserLogin
 
 	err := c.Bind(&userSignup)
-
-	fmt.Println(userSignup)
 
 	if err != nil {
 		return controllers.ErrorResponse(c, http.StatusInternalServerError, "Error binding", err)
@@ -86,16 +83,16 @@ func (controller *UserController) SignUpController(c echo.Context) error {
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Password empty")
 	}
 
-	user, errRepo := controller.usecase.SignUpController(*userSignup.ToUsecase(), ctx)
+	user, errRepo := controller.usecase.SignUp(*userSignup.ToUsecase(), ctx)
 
 	if errRepo != nil {
-		return controllers.ErrorResponse(c, http.StatusNotFound, "Email and password doesn't match", errRepo)
+		return controllers.ErrorResponse(c, http.StatusNotFound, "Error in repo", errRepo)
 	}
 
 	return controllers.SuccessResponse(c, response.FromUsecase(user))
 }
 
-func (controller *UserController) GetDetailUserController(c echo.Context) error {
+func (controller *UserController) GetUserDetail(c echo.Context) error {
 	ctx := c.Request().Context()
 
 	userId, _ := strconv.Atoi(c.Param("userId"))
@@ -104,7 +101,7 @@ func (controller *UserController) GetDetailUserController(c echo.Context) error 
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "User ID empty")
 	}
 
-	user, errRepo := controller.usecase.GetDetailUserController(userId, ctx)
+	user, errRepo := controller.usecase.GetUserDetail(userId, ctx)
 
 	if errRepo != nil {
 		return controllers.ErrorResponse(c, http.StatusNotFound, "User not found", errRepo)
@@ -113,7 +110,7 @@ func (controller *UserController) GetDetailUserController(c echo.Context) error 
 	return controllers.SuccessResponse(c, response.FromUsecase(user))
 }
 
-func (controller *UserController) EditUserController(c echo.Context) error {
+func (controller *UserController) EditUser(c echo.Context) error {
 	ctx := c.Request().Context()
 
 	var userEdit request.UserEdit
@@ -125,6 +122,10 @@ func (controller *UserController) EditUserController(c echo.Context) error {
 		return controllers.ErrorResponse(c, http.StatusInternalServerError, "Error binding", err)
 	}
 
+	if userId == 0 {
+		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "User ID empty")
+	}
+
 	if userEdit.Email == "" {
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Email empty")
 	}
@@ -133,11 +134,7 @@ func (controller *UserController) EditUserController(c echo.Context) error {
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Password empty")
 	}
 
-	if userId == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "User ID empty")
-	}
-
-	user, errRepo := controller.usecase.EditUserController(*userEdit.ToUsecase(), userId, ctx)
+	user, errRepo := controller.usecase.EditUser(*userEdit.ToUsecase(), userId, ctx)
 
 	if errRepo != nil {
 		return controllers.ErrorResponse(c, http.StatusNotFound, "User not found", errRepo)
@@ -146,7 +143,7 @@ func (controller *UserController) EditUserController(c echo.Context) error {
 	return controllers.SuccessResponse(c, response.FromUsecase(user))
 }
 
-func (controller *UserController) DeleteUserController(c echo.Context) error {
+func (controller *UserController) DeleteUser(c echo.Context) error {
 	ctx := c.Request().Context()
 
 	userId, _ := strconv.Atoi(c.Param("userId"))
@@ -155,7 +152,7 @@ func (controller *UserController) DeleteUserController(c echo.Context) error {
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "User ID empty")
 	}
 
-	user, errRepo := controller.usecase.DeleteUserController(userId, ctx)
+	user, errRepo := controller.usecase.DeleteUser(userId, ctx)
 
 	if errRepo != nil {
 		return controllers.ErrorResponse(c, http.StatusNotFound, "User not found", errRepo)

@@ -19,7 +19,7 @@ func NewUserRepository(gormDb *gorm.DB) users.UserRepoInterface {
 	}
 }
 
-func (repo *UserRepository) LoginController(user users.User, ctx context.Context) (users.User, error) {
+func (repo *UserRepository) Login(user users.User, ctx context.Context) (users.User, error) {
 	userDB := FromUsecase(user)
 
 	err := repo.db.Where("email = ? AND password = ?", userDB.Email, userDB.Password).First(&userDB).Error
@@ -34,7 +34,7 @@ func (repo *UserRepository) LoginController(user users.User, ctx context.Context
 	return userDB.ToUsecase(), nil
 }
 
-func (repo *UserRepository) GetAllUsersController(ctx context.Context) ([]users.User, error) {
+func (repo *UserRepository) GetAllUsers(ctx context.Context) ([]users.User, error) {
 	var usersDb []User
 
 	result := repo.db.Find(&usersDb)
@@ -47,7 +47,7 @@ func (repo *UserRepository) GetAllUsersController(ctx context.Context) ([]users.
 	return ToUsecaseList(usersDb), nil
 }
 
-func (repo *UserRepository) SignUpController(user users.User, ctx context.Context) (users.User, error) {
+func (repo *UserRepository) SignUp(user users.User, ctx context.Context) (users.User, error) {
 	userDB := FromUsecase(user)
 
 	result := repo.db.Create(&userDB)
@@ -58,7 +58,7 @@ func (repo *UserRepository) SignUpController(user users.User, ctx context.Contex
 	return userDB.ToUsecase(), nil
 }
 
-func (repo *UserRepository) GetDetailUserController(id int, ctx context.Context) (users.User, error) {
+func (repo *UserRepository) GetUserDetail(id int, ctx context.Context) (users.User, error) {
 	var userDb User
 
 	result := repo.db.First(&userDb, id)
@@ -71,7 +71,7 @@ func (repo *UserRepository) GetDetailUserController(id int, ctx context.Context)
 	return userDb.ToUsecase(), nil
 }
 
-func (repo *UserRepository) EditUserController(user users.User, id int, ctx context.Context) (users.User, error) {
+func (repo *UserRepository) EditUser(user users.User, id int, ctx context.Context) (users.User, error) {
 	userDB := FromUsecase(user)
 	var newUser User
 
@@ -94,12 +94,12 @@ func (repo *UserRepository) EditUserController(user users.User, id int, ctx cont
 }
 
 //Deletenya cuma ngubah deleted at
-func (repo *UserRepository) DeleteUserController(id int, ctx context.Context) (users.User, error) {
+func (repo *UserRepository) DeleteUser(id int, ctx context.Context) (users.User, error) {
 	var userDb User
 
-	resultw := repo.db.First(&userDb, id)
+	resultFind := repo.db.First(&userDb, id)
 
-	if resultw.Error != nil {
+	if resultFind.Error != nil {
 		return users.User{}, errors.New("User not found")
 	}
 

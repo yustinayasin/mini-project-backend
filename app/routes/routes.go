@@ -14,13 +14,13 @@ type RouteControllerList struct {
 
 func (controller RouteControllerList) RouteRegister(e *echo.Echo) {
 	eUser := e.Group("/user")
-	// users.Use(middleware.JWTWithConfig(controller.JWTConfig))
-	e.POST("/login", controller.UserController.LoginController)
-	e.POST("/signup", controller.UserController.SignUpController)
+	// eUser.Use(middleware.JWTWithConfig(controller.JWTConfig))
+	e.POST("/login", controller.UserController.Login)
+	e.POST("/signup", controller.UserController.SignUp)
 	// e.POST("/logout", users.LogoutContorller)
-	eUser.PUT("/:userId", controller.UserController.EditUserController)
-	eUser.DELETE("/:userId", controller.UserController.DeleteUserController)
-	eUser.GET("/:userId", controller.UserController.GetDetailUserController)
-	e.GET("/users", controller.UserController.GetAllUsersController)
+	eUser.PUT("/:userId", controller.UserController.EditUser)
+	eUser.DELETE("/:userId", controller.UserController.DeleteUser)
+	eUser.GET("/:userId", controller.UserController.GetUserDetail)
+	e.GET("/users", controller.UserController.GetAllUsers)
 	// users.GET("/", controller.UserController.Login, middleware.JWTWithConfig(controller.JWTConfig))
 }
