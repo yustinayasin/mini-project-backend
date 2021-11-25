@@ -4,6 +4,7 @@ import (
 	kemejaKeranjangController "kemejaku/controllers/kemejakeranjangs"
 	kemejaController "kemejaku/controllers/kemejas"
 	keranjangController "kemejaku/controllers/keranjangs"
+	saleController "kemejaku/controllers/sales"
 	userController "kemejaku/controllers/users"
 
 	_middleware "kemejaku/app/middleware"
@@ -16,6 +17,7 @@ type RouteControllerList struct {
 	KeranjangController       keranjangController.KeranjangController
 	KemejaController          kemejaController.KemejaController
 	KemejaKeranjangController kemejaKeranjangController.KemejaKeranjangController
+	SaleController            saleController.SaleController
 	JWTConfig                 *_middleware.ConfigJWT
 }
 
@@ -55,4 +57,12 @@ func (controller RouteControllerList) RouteRegister(e *echo.Echo) {
 	e.POST("/kemejas", controller.KemejaController.InsertKemeja)
 	eKemeja.PUT("/:kemejaId", controller.KemejaController.EditKemeja)
 	eKemeja.DELETE("/:kemejaId", controller.KemejaController.DeleteKemeja)
+
+	eSale := e.Group("/sale")
+
+	eSale.GET("/:saleId", controller.SaleController.GetSaleDetail)
+	e.GET("/sales", controller.SaleController.GetAllSale)
+	e.POST("/sales", controller.SaleController.InsertSale)
+	eSale.PUT("/:saleId", controller.SaleController.EditSale)
+	eSale.DELETE("/:saleId", controller.SaleController.DeleteSale)
 }

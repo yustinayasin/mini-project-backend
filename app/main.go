@@ -19,6 +19,10 @@ import (
 	kemejaController "kemejaku/controllers/kemejas"
 	kemejaRepo "kemejaku/drivers/databases/kemejas"
 
+	saleUsecase "kemejaku/business/sales"
+	saleController "kemejaku/controllers/sales"
+	saleRepo "kemejaku/drivers/databases/sales"
+
 	_middleware "kemejaku/app/middleware"
 	"kemejaku/drivers/databases/mysql"
 	"log"
@@ -49,6 +53,7 @@ func dbMigrate(db *gorm.DB) {
 		&keranjangRepo.Keranjang{},
 		&kemejaKeranjangRepo.KemejaKeranjang{},
 		&kemejaRepo.Kemeja{},
+		&saleRepo.Sale{},
 	)
 }
 
@@ -91,11 +96,16 @@ func main() {
 	kemejaUseCaseInterface := kemejaUsecase.NewKemejaUsecase(kemejaRepoInterface, timeoutContext)
 	kemejaControllerInterface := kemejaController.NewKemejaController(kemejaUseCaseInterface)
 
+	saleRepoInterface := saleRepo.NewSaleRepo(db)
+	saleUseCaseInterface := saleUsecase.NewSaleUsecase(saleRepoInterface, timeoutContext)
+	saleControllerInterface := saleController.NewSaleController(saleUseCaseInterface)
+
 	routesInit := routes.RouteControllerList{
 		UserController:            *userControllerInterface,
 		KeranjangController:       *keranjangControllerInterface,
 		KemejaController:          *kemejaControllerInterface,
 		KemejaKeranjangController: *kemejaKeranjangControllerInterface,
+		SaleController:            *saleControllerInterface,
 		JWTConfig:                 &jwt,
 	}
 
