@@ -56,13 +56,13 @@ func (controller *KemejaController) InsertKemeja(c echo.Context) error {
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja stock for size S empty")
 	}
 
-	user, errRepo := controller.usecase.InsertKemeja(*kemeja.ToUsecase(), ctx)
+	kemejaRepo, errRepo := controller.usecase.InsertKemeja(*kemeja.ToUsecase(), ctx)
 
 	if errRepo != nil {
 		return controllers.ErrorResponse(c, http.StatusNotFound, "Failed to insert new kemeja", errRepo)
 	}
 
-	return controllers.SuccessResponse(c, response.FromUsecase(user))
+	return controllers.SuccessResponse(c, response.FromUsecase(kemejaRepo))
 }
 
 func (controller *KemejaController) GetAllKemeja(c echo.Context) error {

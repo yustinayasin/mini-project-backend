@@ -36,13 +36,13 @@ func (controller *KeranjangController) InsertKeranjang(c echo.Context) error {
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "User ID empty")
 	}
 
-	user, errRepo := controller.usecase.InsertKeranjang(*keranjang.ToUsecase(), ctx)
+	keranjangRepo, errRepo := controller.usecase.InsertKeranjang(*keranjang.ToUsecase(), ctx)
 
 	if errRepo != nil {
 		return controllers.ErrorResponse(c, http.StatusNotFound, "Failed to insert new kemeja keranjang", errRepo)
 	}
 
-	return controllers.SuccessResponse(c, response.FromUsecase(user))
+	return controllers.SuccessResponse(c, response.FromUsecase(keranjangRepo))
 }
 
 func (controller *KeranjangController) GetAllKeranjang(c echo.Context) error {

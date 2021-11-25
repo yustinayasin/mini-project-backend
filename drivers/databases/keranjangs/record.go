@@ -9,9 +9,9 @@ import (
 )
 
 type Keranjang struct {
-	Id              int                                `gorm:"primaryKey;unique;autoIncrement:true" json:"id"`
-	IdUser          int                                `json:"userId"`
-	Status          bool                               `json:"status"`
+	Id              int `gorm:"primaryKey;unique;autoIncrement:true"`
+	IdUser          int
+	Status          bool
 	KemejaKeranjang []kemejakeranjangs.KemejaKeranjang `gorm:"foreignKey:IdKeranjang"`
 	CreatedAt       time.Time                          `gorm:"autoCreateTime"`
 	UpdatedAt       time.Time                          `gorm:"autoUpdateTime"`
