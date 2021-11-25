@@ -19,6 +19,7 @@ import (
 	kemejaController "kemejaku/controllers/kemejas"
 	kemejaRepo "kemejaku/drivers/databases/kemejas"
 
+	_middleware "kemejaku/app/middleware"
 	"kemejaku/drivers/databases/mysql"
 	"log"
 	"time"
@@ -63,16 +64,17 @@ func main() {
 	db := configDb.InitialDB()
 	dbMigrate(db)
 
-	// jwt := _middleware.ConfigJWT{
-	// 	SecretJWT:       viper.GetString(`jwt.secret`),
-	// 	ExpiresDuration: viper.GetInt(`jwt.expired`),
-	// }
+	jwt := _middleware.ConfigJWT{
+		SecretJWT:       viper.GetString(`jwt.secret`),
+		ExpiresDuration: viper.GetInt(`jwt.expired`),
+	}
 
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 
 	e := echo.New()
 
 	userRepoInterface := userRepo.NewUserRepository(db)
+	// userUseCaseInterface := userUsecase.NewUseCase(userRepoInterface, timeoutContext, &jwt)
 	userUseCaseInterface := userUsecase.NewUseCase(userRepoInterface, timeoutContext)
 	userControllerInterface := userController.NewUserController(userUseCaseInterface)
 
@@ -81,7 +83,8 @@ func main() {
 	kemejaKeranjangControllerInterface := kemejaKeranjangController.NewKemejaKeranjangController(kemejaKeranjangUseCaseInterface)
 
 	keranjangRepoInterface := keranjangRepo.NewKeranjangRepo(db)
-	keranjangUseCaseInterface := keranjangUsecase.NewKeranjangUcecase(keranjangRepoInterface, kemejaKeranjangRepoInterface, timeoutContext)
+	keranjangUseCaseInterface := keranjangUsecase.NewKeranjangUcecase(keranjangRepoInterface, timeoutContext)
+	// keranjangUseCaseInterface := keranjangUsecase.NewKeranjangUcecase(keranjangRepoInterface, kemejaKeranjangRepoInterface, timeoutContext)
 	keranjangControllerInterface := keranjangController.NewKeranjangController(keranjangUseCaseInterface)
 
 	kemejaRepoInterface := kemejaRepo.NewKemejaRepo(db)
@@ -93,7 +96,7 @@ func main() {
 		KeranjangController:       *keranjangControllerInterface,
 		KemejaController:          *kemejaControllerInterface,
 		KemejaKeranjangController: *kemejaKeranjangControllerInterface,
-		// JWTConfig:      jwt.Init(),
+		JWTConfig:                 &jwt,
 	}
 
 	routesInit.RouteRegister(e)

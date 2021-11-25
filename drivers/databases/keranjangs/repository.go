@@ -32,7 +32,7 @@ func (repo *KeranjangRepository) InsertKeranjang(kk keranjangs.Keranjang, ctx co
 func (repo *KeranjangRepository) GetAllKeranjang(ctx context.Context) ([]keranjangs.Keranjang, error) {
 	var keranjangDB []Keranjang
 
-	result := repo.db.Find(&keranjangDB)
+	result := repo.db.Preload("KemejaKeranjang").Find(&keranjangDB)
 
 	if result.Error != nil {
 		return []keranjangs.Keranjang{}, result.Error
@@ -43,7 +43,7 @@ func (repo *KeranjangRepository) GetAllKeranjang(ctx context.Context) ([]keranja
 func (repo *KeranjangRepository) GetKeranjangDetail(id int, ctx context.Context) (keranjangs.Keranjang, error) {
 	var keranjangDB Keranjang
 
-	result := repo.db.First(&keranjangDB, id)
+	result := repo.db.Preload("KemejaKeranjang").First(&keranjangDB, id)
 
 	if result.Error != nil {
 		return keranjangs.Keranjang{}, result.Error

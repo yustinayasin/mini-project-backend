@@ -20,12 +20,13 @@ type Keranjang struct {
 
 func (keranjang Keranjang) ToUsecase() keranjangs.Keranjang {
 	return keranjangs.Keranjang{
-		Id:        keranjang.Id,
-		IdUser:    keranjang.IdUser,
-		Status:    keranjang.Status,
-		CreatedAt: keranjang.CreatedAt,
-		UpdatedAt: keranjang.UpdatedAt,
-		DeletedAt: keranjang.DeletedAt,
+		Id:              keranjang.Id,
+		IdUser:          keranjang.IdUser,
+		Status:          keranjang.Status,
+		KemejaKeranjang: keranjang.KemejaKeranjang,
+		CreatedAt:       keranjang.CreatedAt,
+		UpdatedAt:       keranjang.UpdatedAt,
+		DeletedAt:       keranjang.DeletedAt,
 	}
 }
 

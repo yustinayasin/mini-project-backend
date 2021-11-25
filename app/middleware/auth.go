@@ -11,12 +11,12 @@ import (
 )
 
 type JwtCustomClaims struct {
-	UserId uint `json:"id"`
+	UserId int `json:"id"`
 	jwt.StandardClaims
 }
 
 type ConfigJWT struct {
-	SecretJWT       string
+	SecretJWT       string //ambil dari config json
 	ExpiresDuration int
 }
 
@@ -30,7 +30,7 @@ func (jwtConf *ConfigJWT) Init() middleware.JWTConfig {
 	}
 }
 
-func (configJwt ConfigJWT) GenererateToken(userId uint) string {
+func (configJwt ConfigJWT) GenerateToken(userId int) string {
 	claims := JwtCustomClaims{
 		userId,
 		jwt.StandardClaims{
@@ -43,4 +43,10 @@ func (configJwt ConfigJWT) GenererateToken(userId uint) string {
 	token, _ := t.SignedString([]byte(configJwt.SecretJWT))
 
 	return token
+}
+
+func GetUser(c echo.Context) int {
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(*JwtCustomClaims)
+	return int(claims.UserId)
 }

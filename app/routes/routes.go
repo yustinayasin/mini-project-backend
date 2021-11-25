@@ -6,8 +6,9 @@ import (
 	keranjangController "kemejaku/controllers/keranjangs"
 	userController "kemejaku/controllers/users"
 
+	_middleware "kemejaku/app/middleware"
+
 	"github.com/labstack/echo/v4"
-	// "github.com/labstack/echo/v4/middleware"
 )
 
 type RouteControllerList struct {
@@ -15,13 +16,13 @@ type RouteControllerList struct {
 	KeranjangController       keranjangController.KeranjangController
 	KemejaController          kemejaController.KemejaController
 	KemejaKeranjangController kemejaKeranjangController.KemejaKeranjangController
-	// JWTConfig      middleware.JWTConfig
+	JWTConfig                 *_middleware.ConfigJWT
 }
 
 func (controller RouteControllerList) RouteRegister(e *echo.Echo) {
 
 	eUser := e.Group("/user")
-	// eUser.Use(middleware.JWTWithConfig(controller.JWTConfig))
+	// eUser.Use(middleware.JWTWithConfig(controller.JWTConfig.Unit()))
 	e.POST("/login", controller.UserController.Login)
 	e.POST("/signup", controller.UserController.SignUp)
 	// e.POST("/logout", users.LogoutContorller)

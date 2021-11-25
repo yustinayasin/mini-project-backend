@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+	_middleware "kemejaku/app/middleware"
 	"time"
 )
 
@@ -10,35 +11,31 @@ type UserUseCase struct {
 	// interface repo
 	repo UserRepoInterface
 	ctx  time.Duration //context untuk time duration
+	jwt  *_middleware.ConfigJWT
 	//misal usecase interaksi dengan yang lainnya nanti bisa ditambahkan
 	//usecase lain
 	//repo lain dipasangkan di main lewat interface
 }
 
-//generate usecase baru
+//generate usecase baru configJwt *_middleware.ConfigJWT
 func NewUseCase(userRepo UserRepoInterface, contextTimeout time.Duration) UserUseCaseInterface {
 	return &UserUseCase{
 		repo: userRepo,
 		ctx:  contextTimeout,
+		// jwt:  configJwt,
 	}
 }
 
 //fungsi harus menempel pada struct
 func (userUseCase *UserUseCase) Login(user User, ctx context.Context) (User, error) {
-	// if user.Email == "" {
-	// 	return User{}, errors.New("Email Empty")
-	// }
-
-	// if user.Password == "" {
-	// 	return User{}, errors.New("Password Empty")
-	// }
-
 	//menghubungkan ke repo
 	userRepo, err := userUseCase.repo.Login(user, ctx)
 
 	if err != nil {
 		return User{}, err
 	}
+
+	// userRepo.Token = userUseCase.jwt.GenerateToken(user.Id)
 
 	return userRepo, nil
 }
