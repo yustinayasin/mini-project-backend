@@ -32,10 +32,6 @@ func (controller *KeranjangController) InsertKeranjang(c echo.Context) error {
 		return controllers.ErrorResponse(c, http.StatusInternalServerError, "Error binding", err)
 	}
 
-	if keranjang.IdUser == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "User ID empty")
-	}
-
 	keranjangRepo, errRepo := controller.usecase.InsertKeranjang(*keranjang.ToUsecase(), ctx)
 
 	if errRepo != nil {
@@ -62,10 +58,6 @@ func (controller *KeranjangController) GetKeranjangDetail(c echo.Context) error 
 
 	keranjangId, _ := strconv.Atoi(c.Param("keranjangId"))
 
-	if keranjangId == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja keranjang ID empty")
-	}
-
 	keranjang, errRepo := controller.usecase.GetKeranjangDetail(keranjangId, ctx)
 
 	if errRepo != nil {
@@ -86,10 +78,6 @@ func (controller *KeranjangController) EditKeranjang(c echo.Context) error {
 		return controllers.ErrorResponse(c, http.StatusInternalServerError, "Error binding", err)
 	}
 
-	if keranjangId == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja keranjang ID empty")
-	}
-
 	keranjangRepo, errRepo := controller.usecase.EditKeranjang(*keranjang.ToUsecase(), keranjangId, ctx)
 
 	if errRepo != nil {
@@ -103,10 +91,6 @@ func (controller *KeranjangController) DeleteKeranjang(c echo.Context) error {
 	ctx := c.Request().Context()
 
 	keranjangId, _ := strconv.Atoi(c.Param("keranjangId"))
-
-	if keranjangId == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Keranjang ID empty")
-	}
 
 	keranjang, errRepo := controller.usecase.DeleteKeranjang(keranjangId, ctx)
 

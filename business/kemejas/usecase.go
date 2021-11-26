@@ -2,6 +2,7 @@ package kemejas
 
 import (
 	"context"
+	"errors"
 	"time"
 )
 
@@ -20,9 +21,32 @@ func NewKemejaUsecase(kemejaRepo KemejaRepoInterface, contextTimeout time.Durati
 	}
 }
 
-func (kemejaUseCase *KemejaUsecase) InsertKemeja(kk Kemeja, ctx context.Context) (Kemeja, error) {
-	//menghubungkan ke repo
-	kemejaRepo, err := kemejaUseCase.repo.InsertKemeja(kk, ctx)
+func (kemejaUseCase *KemejaUsecase) InsertKemeja(kemeja Kemeja, ctx context.Context) (Kemeja, error) {
+	if kemeja.Nama == "" {
+		return Kemeja{}, errors.New("Nama empty")
+	}
+
+	if kemeja.Deskripsi == "" {
+		return Kemeja{}, errors.New("Deskripsi empty")
+	}
+
+	if kemeja.Harga == 0 {
+		return Kemeja{}, errors.New("Harga empty")
+	}
+
+	if kemeja.Stock_L == 0 {
+		return Kemeja{}, errors.New("Kemeja stock for size L empty")
+	}
+
+	if kemeja.Stock_M == 0 {
+		return Kemeja{}, errors.New("Kemeja stock for size M empty")
+	}
+
+	if kemeja.Stock_S == 0 {
+		return Kemeja{}, errors.New("Kemeja stock for size S empty")
+	}
+
+	kemejaRepo, err := kemejaUseCase.repo.InsertKemeja(kemeja, ctx)
 
 	if err != nil {
 		return Kemeja{}, err
@@ -32,7 +56,6 @@ func (kemejaUseCase *KemejaUsecase) InsertKemeja(kk Kemeja, ctx context.Context)
 }
 
 func (kemejaUseCase *KemejaUsecase) GetAllKemeja(ctx context.Context) ([]Kemeja, error) {
-	//menghubungkan ke repo
 	kemejaRepo, err := kemejaUseCase.repo.GetAllKemeja(ctx)
 
 	if err != nil {
@@ -43,7 +66,10 @@ func (kemejaUseCase *KemejaUsecase) GetAllKemeja(ctx context.Context) ([]Kemeja,
 }
 
 func (kemejaUseCase *KemejaUsecase) GetKemejaDetail(id int, ctx context.Context) (Kemeja, error) {
-	//menghubungkan ke repo
+	if id == 0 {
+		return Kemeja{}, errors.New("Kemeja ID empty")
+	}
+
 	kemejaRepo, err := kemejaUseCase.repo.GetKemejaDetail(id, ctx)
 
 	if err != nil {
@@ -53,9 +79,24 @@ func (kemejaUseCase *KemejaUsecase) GetKemejaDetail(id int, ctx context.Context)
 	return kemejaRepo, nil
 }
 
-func (kemejaUseCase *KemejaUsecase) EditKemeja(kk Kemeja, id int, ctx context.Context) (Kemeja, error) {
-	//menghubungkan ke repo
-	kemejaRepo, err := kemejaUseCase.repo.EditKemeja(kk, id, ctx)
+func (kemejaUseCase *KemejaUsecase) EditKemeja(kemeja Kemeja, id int, ctx context.Context) (Kemeja, error) {
+	if id == 0 {
+		return Kemeja{}, errors.New("Kemeja ID empty")
+	}
+
+	if kemeja.Nama == "" {
+		return Kemeja{}, errors.New("Nama empty")
+	}
+
+	if kemeja.Deskripsi == "" {
+		return Kemeja{}, errors.New("Deskripsi empty")
+	}
+
+	if kemeja.Harga == 0 {
+		return Kemeja{}, errors.New("Harga empty")
+	}
+
+	kemejaRepo, err := kemejaUseCase.repo.EditKemeja(kemeja, id, ctx)
 
 	if err != nil {
 		return Kemeja{}, err
@@ -65,7 +106,10 @@ func (kemejaUseCase *KemejaUsecase) EditKemeja(kk Kemeja, id int, ctx context.Co
 }
 
 func (kemejaUseCase *KemejaUsecase) DeleteKemeja(id int, ctx context.Context) (Kemeja, error) {
-	//menghubungkan ke repo
+	if id == 0 {
+		return Kemeja{}, errors.New("Kemeja ID empty")
+	}
+
 	kemejaRepo, err := kemejaUseCase.repo.DeleteKemeja(id, ctx)
 
 	if err != nil {

@@ -2,6 +2,7 @@ package keranjangs
 
 import (
 	"context"
+	"errors"
 	"time"
 )
 
@@ -9,14 +10,6 @@ type KeranjangUsecase struct {
 	repo KeranjangRepoInterface
 	ctx  time.Duration
 }
-
-// func NewKeranjangUcecase(kRepo KeranjangRepoInterface, kkRepo kemejakeranjangs.KemejaKeranjangRepoInterface, contextTimeout time.Duration) KeranjangUseCaseInterface {
-// 	return &KeranjangUsecase{
-// 		repo:                kRepo,
-// 		repoKemejaKeranjang: kkRepo,
-// 		ctx:                 contextTimeout,
-// 	}
-// }
 
 func NewKeranjangUcecase(kRepo KeranjangRepoInterface, contextTimeout time.Duration) KeranjangUseCaseInterface {
 	return &KeranjangUsecase{
@@ -27,7 +20,10 @@ func NewKeranjangUcecase(kRepo KeranjangRepoInterface, contextTimeout time.Durat
 
 //fungsi harus menempel pada struct
 func (kUseCase *KeranjangUsecase) InsertKeranjang(kk Keranjang, ctx context.Context) (Keranjang, error) {
-	//menghubungkan ke repo
+	if kk.IdUser == 0 {
+		return Keranjang{}, errors.New("User ID empty")
+	}
+
 	kkRepo, err := kUseCase.repo.InsertKeranjang(kk, ctx)
 
 	if err != nil {
@@ -38,7 +34,6 @@ func (kUseCase *KeranjangUsecase) InsertKeranjang(kk Keranjang, ctx context.Cont
 }
 
 func (kUseCase *KeranjangUsecase) GetAllKeranjang(ctx context.Context) ([]Keranjang, error) {
-	//menghubungkan ke repo
 	kkRepo, err := kUseCase.repo.GetAllKeranjang(ctx)
 
 	if err != nil {
@@ -49,7 +44,10 @@ func (kUseCase *KeranjangUsecase) GetAllKeranjang(ctx context.Context) ([]Keranj
 }
 
 func (kUseCase *KeranjangUsecase) GetKeranjangDetail(id int, ctx context.Context) (Keranjang, error) {
-	//menghubungkan ke repo
+	if id == 0 {
+		return Keranjang{}, errors.New("Keranjang ID empty")
+	}
+
 	kkRepo, err := kUseCase.repo.GetKeranjangDetail(id, ctx)
 
 	if err != nil {
@@ -60,7 +58,10 @@ func (kUseCase *KeranjangUsecase) GetKeranjangDetail(id int, ctx context.Context
 }
 
 func (kUseCase *KeranjangUsecase) EditKeranjang(kk Keranjang, id int, ctx context.Context) (Keranjang, error) {
-	//menghubungkan ke repo
+	if id == 0 {
+		return Keranjang{}, errors.New("Keranjang ID empty")
+	}
+
 	kkRepo, err := kUseCase.repo.EditKeranjang(kk, id, ctx)
 
 	if err != nil {
@@ -71,7 +72,10 @@ func (kUseCase *KeranjangUsecase) EditKeranjang(kk Keranjang, id int, ctx contex
 }
 
 func (kUseCase *KeranjangUsecase) DeleteKeranjang(id int, ctx context.Context) (Keranjang, error) {
-	//menghubungkan ke repo
+	if id == 0 {
+		return Keranjang{}, errors.New("Keranjang ID empty")
+	}
+
 	kkRepo, err := kUseCase.repo.DeleteKeranjang(id, ctx)
 
 	if err != nil {

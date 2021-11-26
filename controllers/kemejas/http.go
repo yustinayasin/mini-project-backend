@@ -32,30 +32,6 @@ func (controller *KemejaController) InsertKemeja(c echo.Context) error {
 		return controllers.ErrorResponse(c, http.StatusInternalServerError, "Error binding", err)
 	}
 
-	if kemeja.Nama == "" {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja name empty")
-	}
-
-	if kemeja.Deskripsi == "" {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja description empty")
-	}
-
-	if kemeja.Harga == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja price empty")
-	}
-
-	if kemeja.Stock_L == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja stock for size L empty")
-	}
-
-	if kemeja.Stock_M == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja stock for size M empty")
-	}
-
-	if kemeja.Stock_S == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja stock for size S empty")
-	}
-
 	kemejaRepo, errRepo := controller.usecase.InsertKemeja(*kemeja.ToUsecase(), ctx)
 
 	if errRepo != nil {
@@ -82,10 +58,6 @@ func (controller *KemejaController) GetKemejaDetail(c echo.Context) error {
 
 	kemejaId, _ := strconv.Atoi(c.Param("kemejaId"))
 
-	if kemejaId == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja ID empty")
-	}
-
 	kemeja, errRepo := controller.usecase.GetKemejaDetail(kemejaId, ctx)
 
 	if errRepo != nil {
@@ -104,22 +76,6 @@ func (controller *KemejaController) EditKemeja(c echo.Context) error {
 
 	if err != nil {
 		return controllers.ErrorResponse(c, http.StatusInternalServerError, "Error binding", err)
-	}
-
-	if kemejaId == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja ID empty")
-	}
-
-	if kemeja.Nama == "" {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja name empty")
-	}
-
-	if kemeja.Deskripsi == "" {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja description empty")
-	}
-
-	if kemeja.Harga == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja price empty")
 	}
 
 	kemejaRepo, errRepo := controller.usecase.EditKemeja(*kemeja.ToUsecase(), kemejaId, ctx)

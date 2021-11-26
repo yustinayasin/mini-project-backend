@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+	"errors"
 	_middleware "kemejaku/app/middleware"
 	"time"
 )
@@ -28,7 +29,14 @@ func NewUseCase(userRepo UserRepoInterface, contextTimeout time.Duration, config
 
 //fungsi harus menempel pada struct
 func (userUseCase *UserUseCase) Login(user User, ctx context.Context) (User, error) {
-	//menghubungkan ke repo
+	if user.Email == "" {
+		return User{}, errors.New("Email empty")
+	}
+
+	if user.Password == "" {
+		return User{}, errors.New("Password empty")
+	}
+
 	userRepo, err := userUseCase.repo.Login(user, ctx)
 
 	if err != nil {
@@ -51,6 +59,14 @@ func (userUseCase *UserUseCase) GetAllUsers(ctx context.Context) ([]User, error)
 }
 
 func (userUseCase *UserUseCase) SignUp(user User, ctx context.Context) (User, error) {
+	if user.Email == "" {
+		return User{}, errors.New("Email empty")
+	}
+
+	if user.Password == "" {
+		return User{}, errors.New("Password empty")
+	}
+
 	userRepo, err := userUseCase.repo.SignUp(user, ctx)
 
 	if err != nil {
@@ -61,6 +77,10 @@ func (userUseCase *UserUseCase) SignUp(user User, ctx context.Context) (User, er
 }
 
 func (userUseCase *UserUseCase) GetUserDetail(id int, ctx context.Context) (User, error) {
+	if id == 0 {
+		return User{}, errors.New("User ID empty")
+	}
+
 	userRepo, err := userUseCase.repo.GetUserDetail(id, ctx)
 
 	if err != nil {
@@ -71,6 +91,18 @@ func (userUseCase *UserUseCase) GetUserDetail(id int, ctx context.Context) (User
 }
 
 func (userUseCase *UserUseCase) EditUser(user User, id int, ctx context.Context) (User, error) {
+	if id == 0 {
+		return User{}, errors.New("User ID empty")
+	}
+
+	if user.Email == "" {
+		return User{}, errors.New("Email empty")
+	}
+
+	if user.Password == "" {
+		return User{}, errors.New("Password empty")
+	}
+
 	userRepo, err := userUseCase.repo.EditUser(user, id, ctx)
 
 	if err != nil {
@@ -81,6 +113,10 @@ func (userUseCase *UserUseCase) EditUser(user User, id int, ctx context.Context)
 }
 
 func (userUseCase *UserUseCase) DeleteUser(id int, ctx context.Context) (User, error) {
+	if id == 0 {
+		return User{}, errors.New("User ID empty")
+	}
+
 	userRepo, err := userUseCase.repo.DeleteUser(id, ctx)
 
 	if err != nil {

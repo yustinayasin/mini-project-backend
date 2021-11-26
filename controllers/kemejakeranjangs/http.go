@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"kemejaku/business/kemejakeranjangs"
 	"kemejaku/controllers"
 	"kemejaku/controllers/kemejakeranjangs/request"
@@ -33,22 +32,6 @@ func (controller *KemejaKeranjangController) InsertKemejaKeranjang(c echo.Contex
 		return controllers.ErrorResponse(c, http.StatusInternalServerError, "Error binding", err)
 	}
 
-	if kk.IdKemeja == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja ID empty")
-	}
-
-	if kk.IdKeranjang == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Keranjang ID empty")
-	}
-
-	if kk.Jumlah == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Jumlah empty")
-	}
-
-	if kk.Size == "" {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Size empty")
-	}
-
 	user, errRepo := controller.usecase.InsertKemejaKeranjang(*kk.ToUsecase(), ctx)
 
 	if errRepo != nil {
@@ -75,12 +58,6 @@ func (controller *KemejaKeranjangController) GetKemejaKeranjangDetail(c echo.Con
 
 	kemejaKeranjangId, _ := strconv.Atoi(c.Param("kemejaKeranjangId"))
 
-	fmt.Println(kemejaKeranjangId)
-
-	if kemejaKeranjangId == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja keranjang ID empty")
-	}
-
 	kk, errRepo := controller.usecase.GetKemejaKeranjangDetail(kemejaKeranjangId, ctx)
 
 	if errRepo != nil {
@@ -101,18 +78,6 @@ func (controller *KemejaKeranjangController) EditKemejaKeranjang(c echo.Context)
 		return controllers.ErrorResponse(c, http.StatusInternalServerError, "Error binding", err)
 	}
 
-	if kemejaKeranjangId == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja keranjang ID empty")
-	}
-
-	if kk.Jumlah == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Jumlah empty")
-	}
-
-	if kk.Size == "" {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Size empty")
-	}
-
 	kkRepo, errRepo := controller.usecase.EditKemejaKeranjang(*kk.ToUsecase(), kemejaKeranjangId, ctx)
 
 	if errRepo != nil {
@@ -126,10 +91,6 @@ func (controller *KemejaKeranjangController) DeleteKemejaKeranjang(c echo.Contex
 	ctx := c.Request().Context()
 
 	kemejaKeranjangId, _ := strconv.Atoi(c.Param("kemejaKeranjangId"))
-
-	if kemejaKeranjangId == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Kemeja keranjang ID empty")
-	}
 
 	kk, errRepo := controller.usecase.DeleteKemejaKeranjang(kemejaKeranjangId, ctx)
 
