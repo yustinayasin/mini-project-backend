@@ -32,14 +32,6 @@ func (controller *SaleController) InsertSale(c echo.Context) error {
 		return controllers.ErrorResponse(c, http.StatusInternalServerError, "Error binding", err)
 	}
 
-	if sale.Percent == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Sale percent empty")
-	}
-
-	if sale.MinimumPembelian == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Sale minimum pembelian empty")
-	}
-
 	if sale.StartDate == "" {
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Sale start date empty")
 	}
@@ -74,10 +66,6 @@ func (controller *SaleController) GetSaleDetail(c echo.Context) error {
 
 	saleId, _ := strconv.Atoi(c.Param("saleId"))
 
-	if saleId == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Sale ID empty")
-	}
-
 	sale, errRepo := controller.usecase.GetSaleDetail(saleId, ctx)
 
 	if errRepo != nil {
@@ -96,18 +84,6 @@ func (controller *SaleController) EditSale(c echo.Context) error {
 
 	if err != nil {
 		return controllers.ErrorResponse(c, http.StatusInternalServerError, "Error binding", err)
-	}
-
-	if saleId == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Sale ID empty")
-	}
-
-	if sale.Percent == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Sale percent empty")
-	}
-
-	if sale.MinimumPembelian == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Sale minimum pembelian empty")
 	}
 
 	if sale.StartDate == "" {
@@ -131,10 +107,6 @@ func (controller *SaleController) DeleteSale(c echo.Context) error {
 	ctx := c.Request().Context()
 
 	saleId, _ := strconv.Atoi(c.Param("saleId"))
-
-	if saleId == 0 {
-		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Sale ID empty")
-	}
 
 	sale, errRepo := controller.usecase.DeleteSale(saleId, ctx)
 

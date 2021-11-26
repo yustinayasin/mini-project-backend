@@ -2,6 +2,7 @@ package sales
 
 import (
 	"context"
+	"errors"
 	"time"
 )
 
@@ -20,9 +21,17 @@ func NewSaleUsecase(saleRepo SaleRepoInterface, contextTimeout time.Duration) Sa
 	}
 }
 
-func (saleUseCase *SaleUsecase) InsertSale(kk Sale, ctx context.Context) (Sale, error) {
-	//menghubungkan ke repo
-	saleRepo, err := saleUseCase.repo.InsertSale(kk, ctx)
+func (saleUseCase *SaleUsecase) InsertSale(sale Sale, ctx context.Context) (Sale, error) {
+
+	if sale.Percent == 0 {
+		return Sale{}, errors.New("Percent empty")
+	}
+
+	if sale.MinimumPembelian == 0 {
+		return Sale{}, errors.New("Minimum pembelian empty")
+	}
+
+	saleRepo, err := saleUseCase.repo.InsertSale(sale, ctx)
 
 	if err != nil {
 		return Sale{}, err
@@ -32,7 +41,6 @@ func (saleUseCase *SaleUsecase) InsertSale(kk Sale, ctx context.Context) (Sale, 
 }
 
 func (saleUseCase *SaleUsecase) GetAllSale(ctx context.Context) ([]Sale, error) {
-	//menghubungkan ke repo
 	saleRepo, err := saleUseCase.repo.GetAllSale(ctx)
 
 	if err != nil {
@@ -43,7 +51,10 @@ func (saleUseCase *SaleUsecase) GetAllSale(ctx context.Context) ([]Sale, error) 
 }
 
 func (saleUseCase *SaleUsecase) GetSaleDetail(id int, ctx context.Context) (Sale, error) {
-	//menghubungkan ke repo
+	if id == 0 {
+		return Sale{}, errors.New("Sale ID empty")
+	}
+
 	saleRepo, err := saleUseCase.repo.GetSaleDetail(id, ctx)
 
 	if err != nil {
@@ -53,9 +64,20 @@ func (saleUseCase *SaleUsecase) GetSaleDetail(id int, ctx context.Context) (Sale
 	return saleRepo, nil
 }
 
-func (saleUseCase *SaleUsecase) EditSale(kk Sale, id int, ctx context.Context) (Sale, error) {
-	//menghubungkan ke repo
-	saleRepo, err := saleUseCase.repo.EditSale(kk, id, ctx)
+func (saleUseCase *SaleUsecase) EditSale(sale Sale, id int, ctx context.Context) (Sale, error) {
+	if id == 0 {
+		return Sale{}, errors.New("Sale ID empty")
+	}
+
+	if sale.Percent == 0 {
+		return Sale{}, errors.New("Percent empty")
+	}
+
+	if sale.MinimumPembelian == 0 {
+		return Sale{}, errors.New("Minimum pembelian empty")
+	}
+
+	saleRepo, err := saleUseCase.repo.EditSale(sale, id, ctx)
 
 	if err != nil {
 		return Sale{}, err
@@ -65,7 +87,10 @@ func (saleUseCase *SaleUsecase) EditSale(kk Sale, id int, ctx context.Context) (
 }
 
 func (saleUseCase *SaleUsecase) DeleteSale(id int, ctx context.Context) (Sale, error) {
-	//menghubungkan ke repo
+	if id == 0 {
+		return Sale{}, errors.New("Sale ID empty")
+	}
+
 	saleRepo, err := saleUseCase.repo.DeleteSale(id, ctx)
 
 	if err != nil {
