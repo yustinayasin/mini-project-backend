@@ -57,7 +57,19 @@ func TestInsertKeranjang(t *testing.T) {
 		assert.Equal(t, keranjangDataDummy, keranjang)
 	})
 
-	t.Run("Insert failed", func(t *testing.T) {
+	t.Run("User ID empty", func(t *testing.T) {
+		keranjangRepoInterfaceMock.On("InsertKeranjang", mock.AnythingOfType("keranjangs.Keranjang"), mock.Anything).Return(keranjangs.Keranjang{}, errors.New("User ID empty")).Once()
+
+		var requestInsertKeranjang = keranjangs.Keranjang{
+			IdUser: 0,
+		}
+		user, err := keranjangUseCaseInterface.InsertKeranjang(requestInsertKeranjang, context.Background())
+
+		assert.Equal(t, errors.New("User ID empty"), err)
+		assert.Equal(t, keranjangs.Keranjang{}, user)
+	})
+
+	t.Run("Error in database", func(t *testing.T) {
 		keranjangRepoInterfaceMock.On("InsertKeranjang", mock.AnythingOfType("keranjangs.Keranjang"), mock.Anything).Return(keranjangs.Keranjang{}, errors.New("Insert failed")).Once()
 
 		var requestInsertKeranjang = keranjangs.Keranjang{
@@ -65,7 +77,7 @@ func TestInsertKeranjang(t *testing.T) {
 		}
 		keranjang, err := keranjangUseCaseInterface.InsertKeranjang(requestInsertKeranjang, context.Background())
 
-		assert.Equal(t, errors.New("Insert failed"), err)
+		assert.Error(t, err)
 		assert.Equal(t, keranjangs.Keranjang{}, keranjang)
 	})
 }
@@ -81,12 +93,12 @@ func TestGetAllKeranjang(t *testing.T) {
 		assert.Equal(t, keranjangDataDummyGetAllkeranjangs, keranjang)
 	})
 
-	t.Run("Keranjang not found in database", func(t *testing.T) {
-		keranjangRepoInterfaceMock.On("GetAllKeranjang", mock.Anything, mock.Anything).Return([]keranjangs.Keranjang{}, errors.New("There is no keranjang column"))
+	t.Run("Error in database", func(t *testing.T) {
+		keranjangRepoInterfaceMock.On("GetAllKeranjang", mock.Anything, mock.Anything).Return([]keranjangs.Keranjang{}, errors.New("Error in database")).Once()
 
 		keranjang, err := keranjangUseCaseInterface.GetAllKeranjang(context.Background())
 
-		assert.Equal(t, errors.New("There is no keranjang column"), err)
+		assert.Error(t, err)
 		assert.Equal(t, []keranjangs.Keranjang{}, keranjang)
 	})
 }
@@ -102,12 +114,21 @@ func TestGetKeranjangDetail(t *testing.T) {
 		assert.Equal(t, keranjangDataDummy, keranjang)
 	})
 
+	t.Run("Keranjang ID empty", func(t *testing.T) {
+		keranjangRepoInterfaceMock.On("GetKeranjangDetail", mock.Anything, mock.Anything).Return(keranjangs.Keranjang{}, errors.New("Keranjang ID empty")).Once()
+
+		user, err := keranjangUseCaseInterface.GetKeranjangDetail(0, context.Background())
+
+		assert.Equal(t, errors.New("Keranjang ID empty"), err)
+		assert.Equal(t, keranjangs.Keranjang{}, user)
+	})
+
 	t.Run("Keranjangs not found in database", func(t *testing.T) {
 		keranjangRepoInterfaceMock.On("GetKeranjangDetail", mock.Anything, mock.Anything).Return(keranjangs.Keranjang{}, errors.New("Keranjang not found")).Once()
 
 		keranjang, err := keranjangUseCaseInterface.GetKeranjangDetail(-1, context.Background())
 
-		assert.Equal(t, errors.New("Keranjang not found"), err)
+		assert.Error(t, err)
 		assert.Equal(t, keranjangs.Keranjang{}, keranjang)
 	})
 }
@@ -127,15 +148,29 @@ func TestEditKeranjang(t *testing.T) {
 		assert.Equal(t, keranjangDataDummyEdit, keranjang)
 	})
 
-	t.Run("keranjang not found", func(t *testing.T) {
+	t.Run("Keranjang ID empty", func(t *testing.T) {
+		keranjangRepoInterfaceMock.On("EditKeranjang", mock.AnythingOfType("keranjangs.Keranjang"), mock.Anything, mock.Anything).Return(keranjangs.Keranjang{}, errors.New("Keranjang ID empty")).Once()
+
+		var requestEditKeranjang = keranjangs.Keranjang{
+			Status: true,
+		}
+
+		user, err := keranjangUseCaseInterface.EditKeranjang(requestEditKeranjang, 0, context.Background())
+
+		assert.Equal(t, errors.New("Keranjang ID empty"), err)
+		assert.Equal(t, keranjangs.Keranjang{}, user)
+	})
+
+	t.Run("Keranjang not found", func(t *testing.T) {
 		keranjangRepoInterfaceMock.On("EditKeranjang", mock.AnythingOfType("keranjangs.Keranjang"), mock.Anything, mock.Anything).Return(keranjangs.Keranjang{}, errors.New("keranjang not found")).Once()
 
 		var requestEditKeranjang = keranjangs.Keranjang{
 			Status: true,
 		}
+
 		keranjang, err := keranjangUseCaseInterface.EditKeranjang(requestEditKeranjang, 1, context.Background())
 
-		assert.Equal(t, errors.New("keranjang not found"), err)
+		assert.Error(t, err)
 		assert.Equal(t, keranjangs.Keranjang{}, keranjang)
 	})
 }
@@ -151,12 +186,21 @@ func TestDeleteKeranjang(t *testing.T) {
 		assert.Equal(t, keranjangDataDummy, keranjang)
 	})
 
-	t.Run("keranjangs not found", func(t *testing.T) {
-		keranjangRepoInterfaceMock.On("DeleteKeranjang", mock.Anything, mock.Anything).Return(keranjangs.Keranjang{}, errors.New("keranjang not found")).Once()
+	t.Run("Keranjang ID empty", func(t *testing.T) {
+		keranjangRepoInterfaceMock.On("DeleteKeranjang", mock.Anything, mock.Anything).Return(keranjangs.Keranjang{}, errors.New("Keranjang ID empty")).Once()
+
+		user, err := keranjangUseCaseInterface.DeleteKeranjang(0, context.Background())
+
+		assert.Equal(t, errors.New("Keranjang ID empty"), err)
+		assert.Equal(t, keranjangs.Keranjang{}, user)
+	})
+
+	t.Run("Keranjangs not found", func(t *testing.T) {
+		keranjangRepoInterfaceMock.On("DeleteKeranjang", mock.Anything, mock.Anything).Return(keranjangs.Keranjang{}, errors.New("Keranjang not found")).Once()
 
 		keranjang, err := keranjangUseCaseInterface.DeleteKeranjang(-1, context.Background())
 
-		assert.Equal(t, errors.New("keranjang not found"), err)
+		assert.Error(t, err)
 		assert.Equal(t, keranjangs.Keranjang{}, keranjang)
 	})
 }

@@ -3,11 +3,13 @@ package users_test
 import (
 	"context"
 	"errors"
+	"kemejaku/app/middleware"
 	"kemejaku/business/users"
 	"kemejaku/business/users/mocks"
 	"testing"
 	"time"
 
+	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -19,7 +21,11 @@ var userDataDummyLogin, userDataDummyEdit users.User
 var userDataDummyGetAllUsers []users.User
 
 func setup() {
-	userUseCaseInterface = users.NewUseCase(&userRepoInterfaceMock, time.Hour*1)
+	configJwt := middleware.ConfigJWT{
+		SecretJWT:       viper.GetString(`jwt.secret`),
+		ExpiresDuration: viper.GetInt(`jwt.expired`),
+	}
+	userUseCaseInterface = users.NewUseCase(&userRepoInterfaceMock, time.Hour*1, &configJwt)
 
 	//data mock hasil login
 	userDataDummyLogin = users.User{
@@ -70,21 +76,46 @@ func TestLogin(t *testing.T) {
 		}
 
 		user, err := userUseCaseInterface.Login(requestLoginUser, context.Background())
-
 		assert.Equal(t, nil, err)
-		assert.Equal(t, userDataDummyLogin, user)
+		assert.Equal(t, userDataDummyLogin.Id, user.Id)
 	})
 
-	t.Run("User not found in database", func(t *testing.T) {
-		userRepoInterfaceMock.On("Login", mock.AnythingOfType("users.User"), mock.Anything).Return(users.User{}, errors.New("User not found")).Once()
+	t.Run("Email empty", func(t *testing.T) {
+		userRepoInterfaceMock.On("Login", mock.AnythingOfType("users.User"), mock.Anything).Return(users.User{}, errors.New("Email empty")).Once()
 
 		var requestLoginUser = users.User{
-			Email:    "Alterra2@gmail.com",
+			Email:    "",
 			Password: "123",
 		}
 		user, err := userUseCaseInterface.Login(requestLoginUser, context.Background())
 
-		assert.Equal(t, errors.New("User not found"), err)
+		assert.Equal(t, errors.New("Email empty"), err)
+		assert.Equal(t, users.User{}, user)
+	})
+
+	t.Run("Password empty", func(t *testing.T) {
+		userRepoInterfaceMock.On("Login", mock.AnythingOfType("users.User"), mock.Anything).Return(users.User{}, errors.New("Password empty")).Once()
+
+		var requestLoginUser = users.User{
+			Email:    "yustinayasin@gmail.com",
+			Password: "",
+		}
+		user, err := userUseCaseInterface.Login(requestLoginUser, context.Background())
+
+		assert.Equal(t, errors.New("Password empty"), err)
+		assert.Equal(t, users.User{}, user)
+	})
+
+	t.Run("Error in database", func(t *testing.T) {
+		userRepoInterfaceMock.On("Login", mock.AnythingOfType("users.User"), mock.Anything).Return(users.User{}, errors.New("User not found")).Once()
+
+		var requestLoginUser = users.User{
+			Email:    "yustinayasin@gmail.com",
+			Password: "1234",
+		}
+
+		user, err := userUseCaseInterface.Login(requestLoginUser, context.Background())
+		assert.Error(t, err)
 		assert.Equal(t, users.User{}, user)
 	})
 }
@@ -100,12 +131,12 @@ func TestGetAllUsers(t *testing.T) {
 		assert.Equal(t, userDataDummyGetAllUsers, user)
 	})
 
-	t.Run("Users not found in database", func(t *testing.T) {
-		userRepoInterfaceMock.On("GetAllUsers", mock.Anything, mock.Anything).Return([]users.User{}, errors.New("There is no user column"))
+	t.Run("Error in database", func(t *testing.T) {
+		userRepoInterfaceMock.On("GetAllUsers", mock.Anything, mock.Anything).Return([]users.User{}, errors.New("Error in database")).Once()
 
 		user, err := userUseCaseInterface.GetAllUsers(context.Background())
 
-		assert.Equal(t, errors.New("There is no user column"), err)
+		assert.Error(t, err)
 		assert.Equal(t, []users.User{}, user)
 	})
 }
@@ -126,7 +157,33 @@ func TestSignUp(t *testing.T) {
 		assert.Equal(t, userDataDummyLogin, user)
 	})
 
-	t.Run("User not found in database", func(t *testing.T) {
+	t.Run("Email empty", func(t *testing.T) {
+		userRepoInterfaceMock.On("SignUp", mock.AnythingOfType("users.User"), mock.Anything).Return(users.User{}, errors.New("Email empty")).Once()
+
+		var requestLoginUser = users.User{
+			Email:    "",
+			Password: "123",
+		}
+		user, err := userUseCaseInterface.SignUp(requestLoginUser, context.Background())
+
+		assert.Equal(t, errors.New("Email empty"), err)
+		assert.Equal(t, users.User{}, user)
+	})
+
+	t.Run("Password empty", func(t *testing.T) {
+		userRepoInterfaceMock.On("SignUp", mock.AnythingOfType("users.User"), mock.Anything).Return(users.User{}, errors.New("Password empty")).Once()
+
+		var requestLoginUser = users.User{
+			Email:    "yustinayasin@gmail.com",
+			Password: "",
+		}
+		user, err := userUseCaseInterface.SignUp(requestLoginUser, context.Background())
+
+		assert.Equal(t, errors.New("Password empty"), err)
+		assert.Equal(t, users.User{}, user)
+	})
+
+	t.Run("Email already exist", func(t *testing.T) {
 		userRepoInterfaceMock.On("SignUp", mock.AnythingOfType("users.User"), mock.Anything).Return(users.User{}, errors.New("Email already exist")).Once()
 
 		var requestSignUpUser = users.User{
@@ -135,7 +192,7 @@ func TestSignUp(t *testing.T) {
 		}
 		user, err := userUseCaseInterface.SignUp(requestSignUpUser, context.Background())
 
-		assert.Equal(t, errors.New("Email already exist"), err)
+		assert.Error(t, err)
 		assert.Equal(t, users.User{}, user)
 	})
 }
@@ -151,12 +208,21 @@ func TestGetUserDetail(t *testing.T) {
 		assert.Equal(t, userDataDummyLogin, user)
 	})
 
+	t.Run("User ID empty", func(t *testing.T) {
+		userRepoInterfaceMock.On("GetUserDetail", mock.Anything, mock.Anything).Return(users.User{}, errors.New("User ID empty")).Once()
+
+		user, err := userUseCaseInterface.GetUserDetail(0, context.Background())
+
+		assert.Equal(t, errors.New("User ID empty"), err)
+		assert.Equal(t, users.User{}, user)
+	})
+
 	t.Run("Users not found in database", func(t *testing.T) {
 		userRepoInterfaceMock.On("GetUserDetail", mock.Anything, mock.Anything).Return(users.User{}, errors.New("User not found")).Once()
 
 		user, err := userUseCaseInterface.GetUserDetail(-1, context.Background())
 
-		assert.Equal(t, errors.New("User not found"), err)
+		assert.Error(t, err)
 		assert.Equal(t, users.User{}, user)
 	})
 }
@@ -167,14 +233,55 @@ func TestEditUser(t *testing.T) {
 		userRepoInterfaceMock.On("EditUser", mock.AnythingOfType("users.User"), mock.Anything, mock.Anything).Return(userDataDummyEdit, nil).Once()
 
 		var requestEditUser = users.User{
-			Name:  "Yustina Yasin",
-			Email: "yustinayasin@gmail.com",
+			Name:     "Yustina Yasin",
+			Email:    "yustinayasin@gmail.com",
+			Password: "123",
 		}
 
 		user, err := userUseCaseInterface.EditUser(requestEditUser, 1, context.Background())
 
 		assert.Equal(t, nil, err)
 		assert.Equal(t, userDataDummyEdit, user)
+	})
+
+	t.Run("User ID empty", func(t *testing.T) {
+		userRepoInterfaceMock.On("EditUser", mock.AnythingOfType("users.User"), mock.Anything, mock.Anything).Return(users.User{}, errors.New("User ID empty")).Once()
+
+		var requestLoginUser = users.User{
+			Email:    "yustinayasin@gmail.com",
+			Password: "123",
+		}
+
+		user, err := userUseCaseInterface.EditUser(requestLoginUser, 0, context.Background())
+
+		assert.Equal(t, errors.New("User ID empty"), err)
+		assert.Equal(t, users.User{}, user)
+	})
+
+	t.Run("Email empty", func(t *testing.T) {
+		userRepoInterfaceMock.On("EditUser", mock.AnythingOfType("users.User"), mock.Anything, mock.Anything).Return(users.User{}, errors.New("Email empty")).Once()
+
+		var requestLoginUser = users.User{
+			Email:    "",
+			Password: "123",
+		}
+		user, err := userUseCaseInterface.EditUser(requestLoginUser, 1, context.Background())
+
+		assert.Equal(t, errors.New("Email empty"), err)
+		assert.Equal(t, users.User{}, user)
+	})
+
+	t.Run("Password empty", func(t *testing.T) {
+		userRepoInterfaceMock.On("EditUser", mock.AnythingOfType("users.User"), mock.Anything, mock.Anything).Return(users.User{}, errors.New("Password empty")).Once()
+
+		var requestLoginUser = users.User{
+			Email:    "yustinayasin@gmail.com",
+			Password: "",
+		}
+		user, err := userUseCaseInterface.EditUser(requestLoginUser, 1, context.Background())
+
+		assert.Equal(t, errors.New("Password empty"), err)
+		assert.Equal(t, users.User{}, user)
 	})
 
 	t.Run("User not found", func(t *testing.T) {
@@ -186,7 +293,7 @@ func TestEditUser(t *testing.T) {
 		}
 		user, err := userUseCaseInterface.EditUser(requestEditUser, 1, context.Background())
 
-		assert.Equal(t, errors.New("User not found"), err)
+		assert.Error(t, err)
 		assert.Equal(t, users.User{}, user)
 	})
 }
@@ -202,12 +309,21 @@ func TestDeleteUser(t *testing.T) {
 		assert.Equal(t, userDataDummyLogin, user)
 	})
 
+	t.Run("User ID empty", func(t *testing.T) {
+		userRepoInterfaceMock.On("DeleteUser", mock.Anything, mock.Anything).Return(users.User{}, errors.New("User ID empty")).Once()
+
+		user, err := userUseCaseInterface.DeleteUser(0, context.Background())
+
+		assert.Equal(t, errors.New("User ID empty"), err)
+		assert.Equal(t, users.User{}, user)
+	})
+
 	t.Run("Users not found", func(t *testing.T) {
 		userRepoInterfaceMock.On("DeleteUser", mock.Anything, mock.Anything).Return(users.User{}, errors.New("User not found")).Once()
 
 		user, err := userUseCaseInterface.DeleteUser(-1, context.Background())
 
-		assert.Equal(t, errors.New("User not found"), err)
+		assert.Error(t, err)
 		assert.Equal(t, users.User{}, user)
 	})
 }

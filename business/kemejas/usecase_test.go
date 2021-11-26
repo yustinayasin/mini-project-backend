@@ -26,6 +26,7 @@ func setup() {
 		Id:        1,
 		Nama:      "Basic shirt",
 		Deskripsi: "Bahan rayon",
+		Harga:     150000,
 		Stock_L:   10,
 		Stock_M:   10,
 		Stock_S:   10,
@@ -36,6 +37,7 @@ func setup() {
 			Id:        1,
 			Nama:      "Basic shirt",
 			Deskripsi: "Bahan rayon",
+			Harga:     150000,
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   10,
@@ -44,6 +46,7 @@ func setup() {
 			Id:        2,
 			Nama:      "Basic shirt",
 			Deskripsi: "Bahan rayon",
+			Harga:     150000,
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   10,
@@ -59,6 +62,7 @@ func TestInsertKemeja(t *testing.T) {
 		var requestInsertKemeja = kemejas.Kemeja{
 			Nama:      "Basic shirt",
 			Deskripsi: "Bahan rayon",
+			Harga:     150000,
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   10,
@@ -70,19 +74,128 @@ func TestInsertKemeja(t *testing.T) {
 		assert.Equal(t, kemejaDataDummy, kemeja)
 	})
 
-	t.Run("Insert failed", func(t *testing.T) {
+	t.Run("Nama empty", func(t *testing.T) {
+		kemejaRepoInterfaceMock.On("InsertKemeja", mock.AnythingOfType("keranjangs.Keranjang"), mock.Anything).Return(kemejas.Kemeja{}, errors.New("Nama empty")).Once()
+
+		var requestInsertKemeja = kemejas.Kemeja{
+			Nama:      "",
+			Deskripsi: "Bahan rayon",
+			Harga:     150000,
+			Stock_L:   10,
+			Stock_M:   10,
+			Stock_S:   10,
+		}
+
+		user, err := kemejaUseCaseInterface.InsertKemeja(requestInsertKemeja, context.Background())
+
+		assert.Equal(t, errors.New("Nama empty"), err)
+		assert.Equal(t, kemejas.Kemeja{}, user)
+	})
+
+	t.Run("Deskripsi empty", func(t *testing.T) {
+		kemejaRepoInterfaceMock.On("InsertKemeja", mock.AnythingOfType("keranjangs.Keranjang"), mock.Anything).Return(kemejas.Kemeja{}, errors.New("Deskripsi empty")).Once()
+
+		var requestInsertKemeja = kemejas.Kemeja{
+			Nama:      "Flanel shirt",
+			Deskripsi: "",
+			Harga:     150000,
+			Stock_L:   10,
+			Stock_M:   10,
+			Stock_S:   10,
+		}
+
+		user, err := kemejaUseCaseInterface.InsertKemeja(requestInsertKemeja, context.Background())
+
+		assert.Equal(t, errors.New("Deskripsi empty"), err)
+		assert.Equal(t, kemejas.Kemeja{}, user)
+	})
+
+	t.Run("Harga empty", func(t *testing.T) {
+		kemejaRepoInterfaceMock.On("InsertKemeja", mock.AnythingOfType("keranjangs.Keranjang"), mock.Anything).Return(kemejas.Kemeja{}, errors.New("Harga empty")).Once()
+
+		var requestInsertKemeja = kemejas.Kemeja{
+			Nama:      "Flanel shirt",
+			Deskripsi: "Bahan flanel",
+			Harga:     0,
+			Stock_L:   10,
+			Stock_M:   10,
+			Stock_S:   10,
+		}
+
+		user, err := kemejaUseCaseInterface.InsertKemeja(requestInsertKemeja, context.Background())
+
+		assert.Equal(t, errors.New("Harga empty"), err)
+		assert.Equal(t, kemejas.Kemeja{}, user)
+	})
+
+	t.Run("Size L empty", func(t *testing.T) {
+		kemejaRepoInterfaceMock.On("InsertKemeja", mock.AnythingOfType("keranjangs.Keranjang"), mock.Anything).Return(kemejas.Kemeja{}, errors.New("Kemeja stock for size L empty")).Once()
+
+		var requestInsertKemeja = kemejas.Kemeja{
+			Nama:      "Flanel shirt",
+			Deskripsi: "Bahan flanel",
+			Harga:     150000,
+			Stock_L:   0,
+			Stock_M:   10,
+			Stock_S:   10,
+		}
+
+		user, err := kemejaUseCaseInterface.InsertKemeja(requestInsertKemeja, context.Background())
+
+		assert.Equal(t, errors.New("Kemeja stock for size L empty"), err)
+		assert.Equal(t, kemejas.Kemeja{}, user)
+	})
+
+	t.Run("Size M empty", func(t *testing.T) {
+		kemejaRepoInterfaceMock.On("InsertKemeja", mock.AnythingOfType("keranjangs.Keranjang"), mock.Anything).Return(kemejas.Kemeja{}, errors.New("Kemeja stock for size M empty")).Once()
+
+		var requestInsertKemeja = kemejas.Kemeja{
+			Nama:      "Flanel shirt",
+			Deskripsi: "Bahan flanel",
+			Harga:     150000,
+			Stock_L:   10,
+			Stock_M:   0,
+			Stock_S:   10,
+		}
+
+		user, err := kemejaUseCaseInterface.InsertKemeja(requestInsertKemeja, context.Background())
+
+		assert.Equal(t, errors.New("Kemeja stock for size M empty"), err)
+		assert.Equal(t, kemejas.Kemeja{}, user)
+	})
+
+	t.Run("Size S empty", func(t *testing.T) {
+		kemejaRepoInterfaceMock.On("InsertKemeja", mock.AnythingOfType("keranjangs.Keranjang"), mock.Anything).Return(kemejas.Kemeja{}, errors.New("Kemeja stock for size S empty")).Once()
+
+		var requestInsertKemeja = kemejas.Kemeja{
+			Nama:      "Flanel shirt",
+			Deskripsi: "Bahan flanel",
+			Harga:     150000,
+			Stock_L:   10,
+			Stock_M:   10,
+			Stock_S:   0,
+		}
+
+		user, err := kemejaUseCaseInterface.InsertKemeja(requestInsertKemeja, context.Background())
+
+		assert.Equal(t, errors.New("Kemeja stock for size S empty"), err)
+		assert.Equal(t, kemejas.Kemeja{}, user)
+	})
+
+	t.Run("Error in database", func(t *testing.T) {
 		kemejaRepoInterfaceMock.On("InsertKemeja", mock.AnythingOfType("kemejas.Kemeja"), mock.Anything).Return(kemejas.Kemeja{}, errors.New("Insert failed")).Once()
 
 		var requestInsertKemeja = kemejas.Kemeja{
 			Nama:      "Basic shirt",
 			Deskripsi: "Bahan rayon",
+			Harga:     150000,
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   10,
 		}
 		kemeja, err := kemejaUseCaseInterface.InsertKemeja(requestInsertKemeja, context.Background())
 
-		assert.Equal(t, errors.New("Insert failed"), err)
+		assert.Error(t, err)
 		assert.Equal(t, kemejas.Kemeja{}, kemeja)
 	})
 }
@@ -98,12 +211,12 @@ func TestGetAllkemeja(t *testing.T) {
 		assert.Equal(t, kemejaDataDummyGetAllKemejas, kemeja)
 	})
 
-	t.Run("Kemeja not found in database", func(t *testing.T) {
-		kemejaRepoInterfaceMock.On("GetAllKemeja", mock.Anything, mock.Anything).Return([]kemejas.Kemeja{}, errors.New("There is no kemeja column"))
+	t.Run("Error in database", func(t *testing.T) {
+		kemejaRepoInterfaceMock.On("GetAllKemeja", mock.Anything, mock.Anything).Return([]kemejas.Kemeja{}, errors.New("Error in database")).Once()
 
 		kemeja, err := kemejaUseCaseInterface.GetAllKemeja(context.Background())
 
-		assert.Equal(t, errors.New("There is no kemeja column"), err)
+		assert.Error(t, err)
 		assert.Equal(t, []kemejas.Kemeja{}, kemeja)
 	})
 }
@@ -119,12 +232,21 @@ func TestGetkemejaDetail(t *testing.T) {
 		assert.Equal(t, kemejaDataDummy, kemeja)
 	})
 
+	t.Run("Kemeja ID empty", func(t *testing.T) {
+		kemejaRepoInterfaceMock.On("GetKemejaDetail", mock.Anything, mock.Anything).Return(kemejas.Kemeja{}, errors.New("Kemeja ID empty")).Once()
+
+		user, err := kemejaUseCaseInterface.GetKemejaDetail(0, context.Background())
+
+		assert.Equal(t, errors.New("Kemeja ID empty"), err)
+		assert.Equal(t, kemejas.Kemeja{}, user)
+	})
+
 	t.Run("Kemejas not found in database", func(t *testing.T) {
 		kemejaRepoInterfaceMock.On("GetKemejaDetail", mock.Anything, mock.Anything).Return(kemejas.Kemeja{}, errors.New("Kemeja not found")).Once()
 
 		kemeja, err := kemejaUseCaseInterface.GetKemejaDetail(-1, context.Background())
 
-		assert.Equal(t, errors.New("Kemeja not found"), err)
+		assert.Error(t, err)
 		assert.Equal(t, kemejas.Kemeja{}, kemeja)
 	})
 }
@@ -137,6 +259,7 @@ func TestEditkemeja(t *testing.T) {
 		var requestEditKemeja = kemejas.Kemeja{
 			Nama:      "Basic shirt",
 			Deskripsi: "Bahan rayon",
+			Harga:     150000,
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   10,
@@ -148,19 +271,92 @@ func TestEditkemeja(t *testing.T) {
 		assert.Equal(t, kemejaDataDummyEdit, kemeja)
 	})
 
+	t.Run("Kemeja ID empty", func(t *testing.T) {
+		kemejaRepoInterfaceMock.On("EditKemeja", mock.AnythingOfType("keranjangs.Keranjang"), mock.Anything, mock.Anything).Return(kemejas.Kemeja{}, errors.New("Kemeja ID empty")).Once()
+
+		var requestEditKemeja = kemejas.Kemeja{
+			Nama:      "Flanel shirt",
+			Deskripsi: "Bahan flanel",
+			Harga:     150000,
+			Stock_L:   10,
+			Stock_M:   10,
+			Stock_S:   0,
+		}
+
+		user, err := kemejaUseCaseInterface.EditKemeja(requestEditKemeja, 0, context.Background())
+
+		assert.Equal(t, errors.New("Kemeja ID empty"), err)
+		assert.Equal(t, kemejas.Kemeja{}, user)
+	})
+
+	t.Run("Nama empty", func(t *testing.T) {
+		kemejaRepoInterfaceMock.On("EditKemeja", mock.AnythingOfType("keranjangs.Keranjang"), mock.Anything, mock.Anything).Return(kemejas.Kemeja{}, errors.New("Nama empty")).Once()
+
+		var requestEditKemeja = kemejas.Kemeja{
+			Nama:      "",
+			Deskripsi: "Bahan flanel",
+			Harga:     150000,
+			Stock_L:   10,
+			Stock_M:   10,
+			Stock_S:   10,
+		}
+
+		user, err := kemejaUseCaseInterface.EditKemeja(requestEditKemeja, 1, context.Background())
+
+		assert.Equal(t, errors.New("Nama empty"), err)
+		assert.Equal(t, kemejas.Kemeja{}, user)
+	})
+
+	t.Run("Deskripsi empty", func(t *testing.T) {
+		kemejaRepoInterfaceMock.On("EditKemeja", mock.AnythingOfType("keranjangs.Keranjang"), mock.Anything, mock.Anything).Return(kemejas.Kemeja{}, errors.New("Deskripsi empty")).Once()
+
+		var requestEditKemeja = kemejas.Kemeja{
+			Nama:      "Flanel shirt",
+			Deskripsi: "",
+			Harga:     150000,
+			Stock_L:   10,
+			Stock_M:   10,
+			Stock_S:   10,
+		}
+
+		user, err := kemejaUseCaseInterface.EditKemeja(requestEditKemeja, 1, context.Background())
+
+		assert.Equal(t, errors.New("Deskripsi empty"), err)
+		assert.Equal(t, kemejas.Kemeja{}, user)
+	})
+
+	t.Run("Harga empty", func(t *testing.T) {
+		kemejaRepoInterfaceMock.On("EditKemeja", mock.AnythingOfType("keranjangs.Keranjang"), mock.Anything, mock.Anything).Return(kemejas.Kemeja{}, errors.New("Harga empty")).Once()
+
+		var requestEditKemeja = kemejas.Kemeja{
+			Nama:      "Flanel shirt",
+			Deskripsi: "Bahan flanel",
+			Harga:     0,
+			Stock_L:   10,
+			Stock_M:   10,
+			Stock_S:   10,
+		}
+
+		user, err := kemejaUseCaseInterface.EditKemeja(requestEditKemeja, 1, context.Background())
+
+		assert.Equal(t, errors.New("Harga empty"), err)
+		assert.Equal(t, kemejas.Kemeja{}, user)
+	})
+
 	t.Run("Kemeja not found", func(t *testing.T) {
-		kemejaRepoInterfaceMock.On("EditKemeja", mock.AnythingOfType("kemejas.Kemeja"), mock.Anything, mock.Anything).Return(kemejas.Kemeja{}, errors.New("kemeja not found")).Once()
+		kemejaRepoInterfaceMock.On("EditKemeja", mock.AnythingOfType("kemejas.Kemeja"), mock.Anything, mock.Anything).Return(kemejas.Kemeja{}, errors.New("Kemeja not found")).Once()
 
 		var requestEditKemeja = kemejas.Kemeja{
 			Nama:      "Basic shirt",
 			Deskripsi: "Bahan rayon",
+			Harga:     150000,
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   10,
 		}
 		kemeja, err := kemejaUseCaseInterface.EditKemeja(requestEditKemeja, 1, context.Background())
 
-		assert.Equal(t, errors.New("kemeja not found"), err)
+		assert.Error(t, err)
 		assert.Equal(t, kemejas.Kemeja{}, kemeja)
 	})
 }
@@ -176,12 +372,21 @@ func TestDeletekemeja(t *testing.T) {
 		assert.Equal(t, kemejaDataDummy, kemeja)
 	})
 
-	t.Run("kemejas not found", func(t *testing.T) {
-		kemejaRepoInterfaceMock.On("DeleteKemeja", mock.Anything, mock.Anything).Return(kemejas.Kemeja{}, errors.New("kemeja not found")).Once()
+	t.Run("Kemeja ID empty", func(t *testing.T) {
+		kemejaRepoInterfaceMock.On("GetKemejaDetail", mock.Anything, mock.Anything).Return(kemejas.Kemeja{}, errors.New("Kemeja ID empty")).Once()
+
+		user, err := kemejaUseCaseInterface.GetKemejaDetail(0, context.Background())
+
+		assert.Equal(t, errors.New("Kemeja ID empty"), err)
+		assert.Equal(t, kemejas.Kemeja{}, user)
+	})
+
+	t.Run("Kemeja not found", func(t *testing.T) {
+		kemejaRepoInterfaceMock.On("DeleteKemeja", mock.Anything, mock.Anything).Return(kemejas.Kemeja{}, errors.New("Kemeja not found")).Once()
 
 		kemeja, err := kemejaUseCaseInterface.DeleteKemeja(-1, context.Background())
 
-		assert.Equal(t, errors.New("kemeja not found"), err)
+		assert.Error(t, err)
 		assert.Equal(t, kemejas.Kemeja{}, kemeja)
 	})
 }
