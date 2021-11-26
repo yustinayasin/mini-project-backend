@@ -61,3 +61,13 @@ func FromUsecase(kemeja kemejas.Kemeja) Kemeja {
 		DeletedAt: kemeja.DeletedAt,
 	}
 }
+
+func FromUseCaseList(kemejas []kemejas.Kemeja) []Kemeja {
+	var newkemejas []Kemeja
+
+	for _, v := range kemejas {
+		newkemejas = append(newkemejas, FromUsecase(v))
+	}
+
+	return newkemejas
+}

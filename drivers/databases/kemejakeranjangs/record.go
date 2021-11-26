@@ -55,3 +55,13 @@ func FromUsecase(kk kemejakeranjangs.KemejaKeranjang) KemejaKeranjang {
 		DeletedAt:   kk.DeletedAt,
 	}
 }
+
+func FromUseCaseList(kemejakeranjangs []kemejakeranjangs.KemejaKeranjang) []KemejaKeranjang {
+	var newKK []KemejaKeranjang
+
+	for _, v := range kemejakeranjangs {
+		newKK = append(newKK, FromUsecase(v))
+	}
+
+	return newKK
+}

@@ -1,8 +1,8 @@
 package keranjangs
 
 import (
-	"kemejaku/business/kemejakeranjangs"
 	"kemejaku/business/keranjangs"
+	"kemejaku/drivers/databases/kemejakeranjangs"
 	"time"
 
 	"gorm.io/gorm"
@@ -19,11 +19,13 @@ type Keranjang struct {
 }
 
 func (keranjang Keranjang) ToUsecase() keranjangs.Keranjang {
+	newKK := kemejakeranjangs.ToUsecaseList(keranjang.KemejaKeranjang)
+
 	return keranjangs.Keranjang{
 		Id:              keranjang.Id,
 		IdUser:          keranjang.IdUser,
 		Status:          keranjang.Status,
-		KemejaKeranjang: keranjang.KemejaKeranjang,
+		KemejaKeranjang: newKK,
 		CreatedAt:       keranjang.CreatedAt,
 		UpdatedAt:       keranjang.UpdatedAt,
 		DeletedAt:       keranjang.DeletedAt,
@@ -41,12 +43,15 @@ func ToUsecaseList(keranjang []Keranjang) []keranjangs.Keranjang {
 }
 
 func FromUsecase(keranjang keranjangs.Keranjang) Keranjang {
+	newKK := kemejakeranjangs.FromUseCaseList(keranjang.KemejaKeranjang)
+
 	return Keranjang{
-		Id:        keranjang.Id,
-		IdUser:    keranjang.IdUser,
-		Status:    keranjang.Status,
-		CreatedAt: keranjang.CreatedAt,
-		UpdatedAt: keranjang.UpdatedAt,
-		DeletedAt: keranjang.DeletedAt,
+		Id:              keranjang.Id,
+		IdUser:          keranjang.IdUser,
+		Status:          keranjang.Status,
+		KemejaKeranjang: newKK,
+		CreatedAt:       keranjang.CreatedAt,
+		UpdatedAt:       keranjang.UpdatedAt,
+		DeletedAt:       keranjang.DeletedAt,
 	}
 }
