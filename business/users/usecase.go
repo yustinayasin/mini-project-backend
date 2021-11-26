@@ -18,11 +18,11 @@ type UserUseCase struct {
 }
 
 //generate usecase baru configJwt *_middleware.ConfigJWT
-func NewUseCase(userRepo UserRepoInterface, contextTimeout time.Duration) UserUseCaseInterface {
+func NewUseCase(userRepo UserRepoInterface, contextTimeout time.Duration, configJwt *_middleware.ConfigJWT) UserUseCaseInterface {
 	return &UserUseCase{
 		repo: userRepo,
 		ctx:  contextTimeout,
-		// jwt:  configJwt,
+		jwt:  configJwt,
 	}
 }
 
@@ -35,7 +35,7 @@ func (userUseCase *UserUseCase) Login(user User, ctx context.Context) (User, err
 		return User{}, err
 	}
 
-	// userRepo.Token = userUseCase.jwt.GenerateToken(user.Id)
+	userRepo.Token = userUseCase.jwt.GenerateToken(user.Id)
 
 	return userRepo, nil
 }

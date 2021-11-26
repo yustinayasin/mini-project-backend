@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"kemejaku/app/middleware"
 	"kemejaku/business/users"
 	"kemejaku/controllers"
 	"kemejaku/controllers/users/request"
@@ -30,6 +31,9 @@ func (controller *UserController) Login(c echo.Context) error {
 
 	err := c.Bind(&userLogin)
 
+	userId := middleware.GetUserId(c)
+	userLogin.ToUsecase().Id = userId
+
 	if err != nil {
 		return controllers.ErrorResponse(c, http.StatusInternalServerError, "Error binding", err)
 	}
@@ -42,7 +46,6 @@ func (controller *UserController) Login(c echo.Context) error {
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Password empty")
 	}
 
-	//error apa ni
 	user, errRepo := controller.usecase.Login(*userLogin.ToUsecase(), ctx)
 
 	if errRepo != nil {

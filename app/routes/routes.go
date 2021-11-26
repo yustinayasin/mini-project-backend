@@ -10,6 +10,7 @@ import (
 	_middleware "kemejaku/app/middleware"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 type RouteControllerList struct {
@@ -24,7 +25,7 @@ type RouteControllerList struct {
 func (controller RouteControllerList) RouteRegister(e *echo.Echo) {
 
 	eUser := e.Group("/user")
-	// eUser.Use(middleware.JWTWithConfig(controller.JWTConfig.Unit()))
+	eUser.Use(middleware.JWTWithConfig(controller.JWTConfig.Init()))
 	e.POST("/login", controller.UserController.Login)
 	e.POST("/signup", controller.UserController.SignUp)
 	// e.POST("/logout", users.LogoutContorller)

@@ -6,17 +6,21 @@ import (
 )
 
 type Sale struct {
-	Percent          float64   `json:"percent"`
-	MinimumPembelian int       `json:"minimumPembelian"`
-	StartDate        time.Time `json:"startDate"`
-	EndDate          time.Time `json:"endDate"`
+	Percent          float64 `json:"percent"`
+	MinimumPembelian int     `json:"minimumPembelian"`
+	StartDate        string  `json:"startDate"`
+	EndDate          string  `json:"endDate"`
 }
 
 func (sale *Sale) ToUsecase() *sales.Sale {
+	layout := "Jan 2, 2006"
+	startDate, _ := time.Parse(layout, sale.StartDate)
+	endDate, _ := time.Parse(layout, sale.EndDate)
+
 	return &sales.Sale{
 		Percent:          sale.Percent,
 		MinimumPembelian: sale.MinimumPembelian,
-		StartDate:        sale.StartDate,
-		EndDate:          sale.EndDate,
+		StartDate:        startDate,
+		EndDate:          endDate,
 	}
 }

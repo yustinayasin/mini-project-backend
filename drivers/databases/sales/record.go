@@ -14,7 +14,7 @@ type Sale struct {
 	MinimumPembelian int
 	StartDate        time.Time
 	EndDate          time.Time
-	Kemejas          []kemejas.Kemeja `gorm:"foreignKey:IdSale"`
+	Kemejas          []kemejas.Kemeja `gorm:"foreignKey:IdSale;references:Id"`
 	CreatedAt        time.Time        `gorm:"autoCreateTime"`
 	UpdatedAt        time.Time        `gorm:"autoUpdateTime"`
 	DeletedAt        gorm.DeletedAt   `gorm:"index"`

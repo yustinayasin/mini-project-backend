@@ -60,8 +60,6 @@ func (repo *SaleRepository) EditSale(kk sales.Sale, id int, ctx context.Context)
 	if result.Error != nil {
 		return sales.Sale{}, result.Error
 	}
-
-	//ngecek kosong dan engga di mana?
 	newSale.Percent = saleDB.Percent
 	newSale.MinimumPembelian = saleDB.MinimumPembelian
 	newSale.StartDate = saleDB.StartDate

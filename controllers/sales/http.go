@@ -7,7 +7,6 @@ import (
 	"kemejaku/controllers/sales/response"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/labstack/echo/v4"
 )
@@ -41,13 +40,11 @@ func (controller *SaleController) InsertSale(c echo.Context) error {
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Sale minimum pembelian empty")
 	}
 
-	var emptyDate = time.Time{}
-
-	if sale.StartDate == emptyDate {
+	if sale.StartDate == "" {
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Sale start date empty")
 	}
 
-	if sale.EndDate == emptyDate {
+	if sale.EndDate == "" {
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Sale end date empty")
 	}
 
@@ -113,13 +110,11 @@ func (controller *SaleController) EditSale(c echo.Context) error {
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Sale minimum pembelian empty")
 	}
 
-	var emptyDate = time.Time{}
-
-	if sale.StartDate == emptyDate {
+	if sale.StartDate == "" {
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Sale start date empty")
 	}
 
-	if sale.EndDate == emptyDate {
+	if sale.EndDate == "" {
 		return controllers.ErrorResponseWithoutMessages(c, http.StatusBadRequest, "Sale end date empty")
 	}
 

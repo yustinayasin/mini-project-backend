@@ -79,8 +79,8 @@ func main() {
 	e := echo.New()
 
 	userRepoInterface := userRepo.NewUserRepository(db)
-	// userUseCaseInterface := userUsecase.NewUseCase(userRepoInterface, timeoutContext, &jwt)
-	userUseCaseInterface := userUsecase.NewUseCase(userRepoInterface, timeoutContext)
+	userUseCaseInterface := userUsecase.NewUseCase(userRepoInterface, timeoutContext, &jwt)
+	// userUseCaseInterface := userUsecase.NewUseCase(userRepoInterface, timeoutContext)
 	userControllerInterface := userController.NewUserController(userUseCaseInterface)
 
 	kemejaKeranjangRepoInterface := kemejaKeranjangRepo.NewKemejaKeranjangRepo(db)
