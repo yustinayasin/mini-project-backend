@@ -373,9 +373,9 @@ func TestDeletekemeja(t *testing.T) {
 	})
 
 	t.Run("Kemeja ID empty", func(t *testing.T) {
-		kemejaRepoInterfaceMock.On("GetKemejaDetail", mock.Anything, mock.Anything).Return(kemejas.Kemeja{}, errors.New("Kemeja ID empty")).Once()
+		kemejaRepoInterfaceMock.On("DeleteKemeja", mock.Anything, mock.Anything).Return(kemejas.Kemeja{}, errors.New("Kemeja ID empty")).Once()
 
-		user, err := kemejaUseCaseInterface.GetKemejaDetail(0, context.Background())
+		user, err := kemejaUseCaseInterface.DeleteKemeja(0, context.Background())
 
 		assert.Equal(t, errors.New("Kemeja ID empty"), err)
 		assert.Equal(t, kemejas.Kemeja{}, user)

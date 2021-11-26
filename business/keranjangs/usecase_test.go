@@ -63,10 +63,10 @@ func TestInsertKeranjang(t *testing.T) {
 		var requestInsertKeranjang = keranjangs.Keranjang{
 			IdUser: 0,
 		}
-		user, err := keranjangUseCaseInterface.InsertKeranjang(requestInsertKeranjang, context.Background())
+		keranjang, err := keranjangUseCaseInterface.InsertKeranjang(requestInsertKeranjang, context.Background())
 
 		assert.Equal(t, errors.New("User ID empty"), err)
-		assert.Equal(t, keranjangs.Keranjang{}, user)
+		assert.Equal(t, keranjangs.Keranjang{}, keranjang)
 	})
 
 	t.Run("Error in database", func(t *testing.T) {
@@ -117,10 +117,10 @@ func TestGetKeranjangDetail(t *testing.T) {
 	t.Run("Keranjang ID empty", func(t *testing.T) {
 		keranjangRepoInterfaceMock.On("GetKeranjangDetail", mock.Anything, mock.Anything).Return(keranjangs.Keranjang{}, errors.New("Keranjang ID empty")).Once()
 
-		user, err := keranjangUseCaseInterface.GetKeranjangDetail(0, context.Background())
+		keranjang, err := keranjangUseCaseInterface.GetKeranjangDetail(0, context.Background())
 
 		assert.Equal(t, errors.New("Keranjang ID empty"), err)
-		assert.Equal(t, keranjangs.Keranjang{}, user)
+		assert.Equal(t, keranjangs.Keranjang{}, keranjang)
 	})
 
 	t.Run("Keranjangs not found in database", func(t *testing.T) {
@@ -155,10 +155,10 @@ func TestEditKeranjang(t *testing.T) {
 			Status: true,
 		}
 
-		user, err := keranjangUseCaseInterface.EditKeranjang(requestEditKeranjang, 0, context.Background())
+		keranjang, err := keranjangUseCaseInterface.EditKeranjang(requestEditKeranjang, 0, context.Background())
 
 		assert.Equal(t, errors.New("Keranjang ID empty"), err)
-		assert.Equal(t, keranjangs.Keranjang{}, user)
+		assert.Equal(t, keranjangs.Keranjang{}, keranjang)
 	})
 
 	t.Run("Keranjang not found", func(t *testing.T) {
@@ -189,10 +189,10 @@ func TestDeleteKeranjang(t *testing.T) {
 	t.Run("Keranjang ID empty", func(t *testing.T) {
 		keranjangRepoInterfaceMock.On("DeleteKeranjang", mock.Anything, mock.Anything).Return(keranjangs.Keranjang{}, errors.New("Keranjang ID empty")).Once()
 
-		user, err := keranjangUseCaseInterface.DeleteKeranjang(0, context.Background())
+		keranjang, err := keranjangUseCaseInterface.DeleteKeranjang(0, context.Background())
 
 		assert.Equal(t, errors.New("Keranjang ID empty"), err)
-		assert.Equal(t, keranjangs.Keranjang{}, user)
+		assert.Equal(t, keranjangs.Keranjang{}, keranjang)
 	})
 
 	t.Run("Keranjangs not found", func(t *testing.T) {
