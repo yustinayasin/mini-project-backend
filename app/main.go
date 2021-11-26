@@ -52,8 +52,8 @@ func dbMigrate(db *gorm.DB) {
 		&userRepo.User{},
 		&keranjangRepo.Keranjang{},
 		&kemejaKeranjangRepo.KemejaKeranjang{},
-		&kemejaRepo.Kemeja{},
 		&saleRepo.Sale{},
+		&kemejaRepo.Kemeja{},
 	)
 }
 
