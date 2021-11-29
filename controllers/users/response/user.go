@@ -1,6 +1,7 @@
 package response
 
 import (
+	"kemejaku/business/keranjangs"
 	"kemejaku/business/users"
 	"time"
 
@@ -8,18 +9,19 @@ import (
 )
 
 type UserResponse struct {
-	Id          int            `json:"id"`
-	Email       string         `json:"email"`
-	Name        string         `json:"name"`
-	Password    string         `json:"password"`
-	Token       string         `json:"token"`
-	PhoneNumber string         `json:"phoneNumber"`
-	Street      string         `json:"street"`
-	Address     string         `json:"address"`
-	PostalCode  string         `json:"postalCode"`
-	CreatedAt   time.Time      `json:"createdAt"`
-	UpdatedAt   time.Time      `json:"updatedAt"`
-	DeletedAt   gorm.DeletedAt `json:"deletedAt"`
+	Id          int                  `json:"id"`
+	Email       string               `json:"email"`
+	Name        string               `json:"name"`
+	Password    string               `json:"password"`
+	Token       string               `json:"token"`
+	PhoneNumber string               `json:"phoneNumber"`
+	Street      string               `json:"street"`
+	Address     string               `json:"address"`
+	PostalCode  string               `json:"postalCode"`
+	Keranjang   keranjangs.Keranjang `json:"keranjang"`
+	CreatedAt   time.Time            `json:"createdAt"`
+	UpdatedAt   time.Time            `json:"updatedAt"`
+	DeletedAt   gorm.DeletedAt       `json:"deletedAt"`
 }
 
 func FromUsecase(user users.User) UserResponse {
