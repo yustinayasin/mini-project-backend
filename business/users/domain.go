@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+	"kemejaku/business/keranjangs"
 	"time"
 
 	"gorm.io/gorm"
@@ -17,6 +18,7 @@ type User struct {
 	Street      string
 	Address     string
 	PostalCode  string
+	Keranjangs  keranjangs.Keranjang
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   gorm.DeletedAt
