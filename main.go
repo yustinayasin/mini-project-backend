@@ -35,7 +35,7 @@ import (
 
 func init() {
 	//viper digunakan untuk membaca file config.json
-	viper.SetConfigFile("app/config/config.json")
+	viper.SetConfigFile("config.json")
 	err := viper.ReadInConfig()
 
 	if err != nil {

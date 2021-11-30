@@ -7,11 +7,11 @@
       "timeout":2
     },
     "database": {
-        "host": "localhost",
+        "host": "kemejaku.cxqoa3ehr9zq.us-east-2.rds.amazonaws.com",
         "port": "3306",
-        "user": "root",
-        "pass": "",
-        "name": "kemejaku2"
+        "user": "admin",
+        "pass": "Mudjinah19",
+        "name": "kemejaku"
     },
     "jwt" : {
       "secret" : "supersecret12345!@#$%",

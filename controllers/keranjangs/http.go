@@ -35,7 +35,7 @@ func (controller *KeranjangController) InsertKeranjang(c echo.Context) error {
 	keranjangRepo, errRepo := controller.usecase.InsertKeranjang(*keranjang.ToUsecase(), ctx)
 
 	if errRepo != nil {
-		return controllers.ErrorResponse(c, http.StatusNotFound, "Failed to insert new kemeja keranjang", errRepo)
+		return controllers.ErrorResponse(c, http.StatusNotFound, "Internal error", errRepo)
 	}
 
 	return controllers.SuccessResponse(c, response.FromUsecase(keranjangRepo))
@@ -47,7 +47,7 @@ func (controller *KeranjangController) GetAllKeranjang(c echo.Context) error {
 	keranjang, errRepo := controller.usecase.GetAllKeranjang(ctx)
 
 	if errRepo != nil {
-		return controllers.ErrorResponse(c, http.StatusNotFound, "There is no keranjang column", errRepo)
+		return controllers.ErrorResponse(c, http.StatusNotFound, "Internal error", errRepo)
 	}
 
 	return controllers.SuccessResponse(c, response.FromUsecaseList(keranjang))
@@ -61,7 +61,7 @@ func (controller *KeranjangController) GetKeranjangDetail(c echo.Context) error 
 	keranjang, errRepo := controller.usecase.GetKeranjangDetail(keranjangId, ctx)
 
 	if errRepo != nil {
-		return controllers.ErrorResponse(c, http.StatusNotFound, "Keranjang not found", errRepo)
+		return controllers.ErrorResponse(c, http.StatusNotFound, "Internal error", errRepo)
 	}
 
 	return controllers.SuccessResponse(c, response.FromUsecase(keranjang))
@@ -81,7 +81,7 @@ func (controller *KeranjangController) EditKeranjang(c echo.Context) error {
 	keranjangRepo, errRepo := controller.usecase.EditKeranjang(*keranjang.ToUsecase(), keranjangId, ctx)
 
 	if errRepo != nil {
-		return controllers.ErrorResponse(c, http.StatusNotFound, "Kemeja keranjang not found", errRepo)
+		return controllers.ErrorResponse(c, http.StatusNotFound, "Internal error", errRepo)
 	}
 
 	return controllers.SuccessResponse(c, response.FromUsecase(keranjangRepo))
@@ -95,7 +95,7 @@ func (controller *KeranjangController) DeleteKeranjang(c echo.Context) error {
 	keranjang, errRepo := controller.usecase.DeleteKeranjang(keranjangId, ctx)
 
 	if errRepo != nil {
-		return controllers.ErrorResponse(c, http.StatusNotFound, "Keranjang not found", errRepo)
+		return controllers.ErrorResponse(c, http.StatusNotFound, "Internal error", errRepo)
 	}
 
 	return controllers.SuccessResponse(c, response.FromUsecase(keranjang))

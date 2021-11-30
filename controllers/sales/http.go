@@ -43,7 +43,7 @@ func (controller *SaleController) InsertSale(c echo.Context) error {
 	saleRepo, errRepo := controller.usecase.InsertSale(*sale.ToUsecase(), ctx)
 
 	if errRepo != nil {
-		return controllers.ErrorResponse(c, http.StatusNotFound, "Failed to insert new sale", errRepo)
+		return controllers.ErrorResponse(c, http.StatusNotFound, "Internal error", errRepo)
 	}
 
 	return controllers.SuccessResponse(c, response.FromUsecase(saleRepo))
@@ -55,7 +55,7 @@ func (controller *SaleController) GetAllSale(c echo.Context) error {
 	sale, errRepo := controller.usecase.GetAllSale(ctx)
 
 	if errRepo != nil {
-		return controllers.ErrorResponse(c, http.StatusNotFound, "There is no sale column", errRepo)
+		return controllers.ErrorResponse(c, http.StatusNotFound, "Internal error", errRepo)
 	}
 
 	return controllers.SuccessResponse(c, response.FromUsecaseList(sale))
@@ -69,7 +69,7 @@ func (controller *SaleController) GetSaleDetail(c echo.Context) error {
 	sale, errRepo := controller.usecase.GetSaleDetail(saleId, ctx)
 
 	if errRepo != nil {
-		return controllers.ErrorResponse(c, http.StatusNotFound, "Sale not found", errRepo)
+		return controllers.ErrorResponse(c, http.StatusNotFound, "Internal error", errRepo)
 	}
 
 	return controllers.SuccessResponse(c, response.FromUsecase(sale))
@@ -97,7 +97,7 @@ func (controller *SaleController) EditSale(c echo.Context) error {
 	saleRepo, errRepo := controller.usecase.EditSale(*sale.ToUsecase(), saleId, ctx)
 
 	if errRepo != nil {
-		return controllers.ErrorResponse(c, http.StatusNotFound, "Sale not found", errRepo)
+		return controllers.ErrorResponse(c, http.StatusNotFound, "Internal error", errRepo)
 	}
 
 	return controllers.SuccessResponse(c, response.FromUsecase(saleRepo))
@@ -111,7 +111,7 @@ func (controller *SaleController) DeleteSale(c echo.Context) error {
 	sale, errRepo := controller.usecase.DeleteSale(saleId, ctx)
 
 	if errRepo != nil {
-		return controllers.ErrorResponse(c, http.StatusNotFound, "Sale not found", errRepo)
+		return controllers.ErrorResponse(c, http.StatusNotFound, "Internal error", errRepo)
 	}
 
 	return controllers.SuccessResponse(c, response.FromUsecase(sale))

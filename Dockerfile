@@ -8,6 +8,7 @@ RUN go build -o main
 #stageII
 FROM alpine:3.14
 WORKDIR /app
+COPY --from=builder /app/config.json .
 COPY --from=builder /app/main .
 EXPOSE 8000
 CMD [ "./main" ]
