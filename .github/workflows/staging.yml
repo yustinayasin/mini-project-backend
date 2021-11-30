@@ -15,3 +15,19 @@ jobs:
           go-versions: 1.17.2
       - name: running unit test
         run: go test ./... -cover
+  build-push-docker:
+    name: build image and push registry dockerhub
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: build image
+        run: docker build -t ystnysn/kemejaku_alterra .
+      - name: login dockerhub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: push image to dockerhub
+        run: docker push ystnysn/kemejaku_alterra:latest
+        
+
