@@ -37,7 +37,7 @@ func (repo *UserRepository) Login(user users.User, ctx context.Context) (users.U
 func (repo *UserRepository) GetAllUsers(ctx context.Context) ([]users.User, error) {
 	var usersDb []User
 
-	result := repo.db.Find(&usersDb)
+	result := repo.db.Preload("Keranjang").Find(&usersDb)
 
 	if result.Error != nil {
 		return []users.User{}, result.Error
@@ -61,7 +61,7 @@ func (repo *UserRepository) SignUp(user users.User, ctx context.Context) (users.
 func (repo *UserRepository) GetUserDetail(id int, ctx context.Context) (users.User, error) {
 	var userDb User
 
-	result := repo.db.First(&userDb, id)
+	result := repo.db.Preload("Keranjang").First(&userDb, id)
 
 	//kalo ga ketemu idnya gimana?
 	if result.Error != nil {
