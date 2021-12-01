@@ -80,7 +80,6 @@ func main() {
 
 	userRepoInterface := userRepo.NewUserRepository(db)
 	userUseCaseInterface := userUsecase.NewUseCase(userRepoInterface, timeoutContext, &jwt)
-	// userUseCaseInterface := userUsecase.NewUseCase(userRepoInterface, timeoutContext)
 	userControllerInterface := userController.NewUserController(userUseCaseInterface)
 
 	kemejaKeranjangRepoInterface := kemejaKeranjangRepo.NewKemejaKeranjangRepo(db)
@@ -89,23 +88,22 @@ func main() {
 
 	keranjangRepoInterface := keranjangRepo.NewKeranjangRepo(db)
 	keranjangUseCaseInterface := keranjangUsecase.NewKeranjangUcecase(keranjangRepoInterface, timeoutContext)
-	// keranjangUseCaseInterface := keranjangUsecase.NewKeranjangUcecase(keranjangRepoInterface, kemejaKeranjangRepoInterface, timeoutContext)
 	keranjangControllerInterface := keranjangController.NewKeranjangController(keranjangUseCaseInterface)
-
-	kemejaRepoInterface := kemejaRepo.NewKemejaRepo(db)
-	kemejaUseCaseInterface := kemejaUsecase.NewKemejaUsecase(kemejaRepoInterface, timeoutContext)
-	kemejaControllerInterface := kemejaController.NewKemejaController(kemejaUseCaseInterface)
 
 	saleRepoInterface := saleRepo.NewSaleRepo(db)
 	saleUseCaseInterface := saleUsecase.NewSaleUsecase(saleRepoInterface, timeoutContext)
 	saleControllerInterface := saleController.NewSaleController(saleUseCaseInterface)
 
+	kemejaRepoInterface := kemejaRepo.NewKemejaRepo(db)
+	kemejaUseCaseInterface := kemejaUsecase.NewKemejaUsecase(kemejaRepoInterface, timeoutContext)
+	kemejaControllerInterface := kemejaController.NewKemejaController(kemejaUseCaseInterface)
+
 	routesInit := routes.RouteControllerList{
 		UserController:            *userControllerInterface,
 		KeranjangController:       *keranjangControllerInterface,
+		SaleController:            *saleControllerInterface,
 		KemejaController:          *kemejaControllerInterface,
 		KemejaKeranjangController: *kemejaKeranjangControllerInterface,
-		SaleController:            *saleControllerInterface,
 		JWTConfig:                 &jwt,
 	}
 
