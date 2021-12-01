@@ -22,7 +22,7 @@ func NewUserRepository(gormDb *gorm.DB) users.UserRepoInterface {
 func (repo *UserRepository) Login(user users.User, ctx context.Context) (users.User, error) {
 	userDB := FromUsecase(user)
 
-	err := repo.db.Where("email = ? AND password = ?", userDB.Email, userDB.Password).First(&userDB).Error
+	err := repo.db.Where("email = ?", userDB.Email).First(&userDB).Error
 
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {

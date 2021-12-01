@@ -43,6 +43,12 @@ func (userUseCase *UserUseCase) Login(user User, ctx context.Context) (User, err
 		return User{}, err
 	}
 
+	match := CheckPasswordHash(user.Password, userRepo.Password)
+
+	if match != true {
+		return User{}, errors.New("Password doesn't match")
+	}
+
 	userRepo.Token = userUseCase.jwt.GenerateToken(user.Id)
 
 	return userRepo, nil
@@ -66,6 +72,10 @@ func (userUseCase *UserUseCase) SignUp(user User, ctx context.Context) (User, er
 	if user.Password == "" {
 		return User{}, errors.New("Password empty")
 	}
+
+	hash, _ := HashPassword(user.Password)
+
+	user.Password = hash
 
 	userRepo, err := userUseCase.repo.SignUp(user, ctx)
 
