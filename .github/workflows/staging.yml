@@ -53,7 +53,7 @@ jobs:
             StrictHostKeyChecking=no
           END
       - name: connect ec2, remove container, pull from registry, end start
-        run: ssh development 'docker rm -f $(docker ps -a -q) || true && docker pull ystnysn/kemejaku_alterra:latest && docker run -p 8000:8000 --name kemejaku ystnysn/kemejaku_alterra:latest'
+        run: ssh development 'docker rm -f $(docker ps -a -q) || true && docker pull ystnysn/kemejaku_alterra:latest && docker run -d -p 8000:8000 --name kemejaku ystnysn/kemejaku_alterra:latest'
 
 
 
