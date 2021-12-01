@@ -2,7 +2,6 @@ package sales
 
 import (
 	"kemejaku/business/sales"
-	"kemejaku/drivers/databases/kemejas"
 	"time"
 
 	"gorm.io/gorm"
@@ -14,14 +13,14 @@ type Sale struct {
 	MinimumPembelian int
 	StartDate        time.Time
 	EndDate          time.Time
-	Kemejas          []kemejas.Kemeja
-	CreatedAt        time.Time      `gorm:"autoCreateTime"`
-	UpdatedAt        time.Time      `gorm:"autoUpdateTime"`
-	DeletedAt        gorm.DeletedAt `gorm:"index"`
+	// Kemejas          []kemejas.Kemeja `gorm:"foreignKey:IdSale"`
+	CreatedAt time.Time      `gorm:"autoCreateTime"`
+	UpdatedAt time.Time      `gorm:"autoUpdateTime"`
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
 func (sale Sale) ToUsecase() sales.Sale {
-	newKemejas := kemejas.ToUsecaseList(sale.Kemejas)
+	// newKemejas := kemejas.ToUsecaseList(sale.Kemejas)
 
 	return sales.Sale{
 		Id:               sale.Id,
@@ -29,10 +28,10 @@ func (sale Sale) ToUsecase() sales.Sale {
 		MinimumPembelian: sale.MinimumPembelian,
 		StartDate:        sale.StartDate,
 		EndDate:          sale.EndDate,
-		Kemejas:          newKemejas,
-		CreatedAt:        sale.CreatedAt,
-		UpdatedAt:        sale.UpdatedAt,
-		DeletedAt:        sale.DeletedAt,
+		// Kemejas:          newKemejas,
+		CreatedAt: sale.CreatedAt,
+		UpdatedAt: sale.UpdatedAt,
+		DeletedAt: sale.DeletedAt,
 	}
 }
 
@@ -47,7 +46,7 @@ func ToUsecaseList(sale []Sale) []sales.Sale {
 }
 
 func FromUsecase(sale sales.Sale) Sale {
-	newKemejas := kemejas.FromUseCaseList(sale.Kemejas)
+	// newKemejas := kemejas.FromUseCaseList(sale.Kemejas)
 
 	return Sale{
 		Id:               sale.Id,
@@ -55,9 +54,9 @@ func FromUsecase(sale sales.Sale) Sale {
 		MinimumPembelian: sale.MinimumPembelian,
 		StartDate:        sale.StartDate,
 		EndDate:          sale.EndDate,
-		Kemejas:          newKemejas,
-		CreatedAt:        sale.CreatedAt,
-		UpdatedAt:        sale.UpdatedAt,
-		DeletedAt:        sale.DeletedAt,
+		// Kemejas:          newKemejas,
+		CreatedAt: sale.CreatedAt,
+		UpdatedAt: sale.UpdatedAt,
+		DeletedAt: sale.DeletedAt,
 	}
 }

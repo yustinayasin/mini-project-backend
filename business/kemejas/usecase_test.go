@@ -30,7 +30,7 @@ func setup() {
 		Stock_L:   10,
 		Stock_M:   10,
 		Stock_S:   10,
-		SaleID:    1,
+		IdSale:    1,
 	}
 
 	kemejaDataDummyGetAllKemejas = []kemejas.Kemeja{
@@ -42,7 +42,7 @@ func setup() {
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   10,
-			SaleID:    1,
+			IdSale:    1,
 		},
 		{
 			Id:        2,
@@ -52,7 +52,7 @@ func setup() {
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   10,
-			SaleID:    1,
+			IdSale:    1,
 		},
 	}
 }
@@ -69,7 +69,7 @@ func TestInsertKemeja(t *testing.T) {
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   10,
-			SaleID:    1,
+			IdSale:    1,
 		}
 
 		kemeja, err := kemejaUseCaseInterface.InsertKemeja(requestInsertKemeja, context.Background())
@@ -88,7 +88,7 @@ func TestInsertKemeja(t *testing.T) {
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   10,
-			SaleID:    1,
+			IdSale:    1,
 		}
 
 		user, err := kemejaUseCaseInterface.InsertKemeja(requestInsertKemeja, context.Background())
@@ -107,7 +107,7 @@ func TestInsertKemeja(t *testing.T) {
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   10,
-			SaleID:    1,
+			IdSale:    1,
 		}
 
 		user, err := kemejaUseCaseInterface.InsertKemeja(requestInsertKemeja, context.Background())
@@ -126,7 +126,7 @@ func TestInsertKemeja(t *testing.T) {
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   10,
-			SaleID:    1,
+			IdSale:    1,
 		}
 
 		user, err := kemejaUseCaseInterface.InsertKemeja(requestInsertKemeja, context.Background())
@@ -145,7 +145,7 @@ func TestInsertKemeja(t *testing.T) {
 			Stock_L:   0,
 			Stock_M:   10,
 			Stock_S:   10,
-			SaleID:    1,
+			IdSale:    1,
 		}
 
 		user, err := kemejaUseCaseInterface.InsertKemeja(requestInsertKemeja, context.Background())
@@ -164,7 +164,7 @@ func TestInsertKemeja(t *testing.T) {
 			Stock_L:   10,
 			Stock_M:   0,
 			Stock_S:   10,
-			SaleID:    1,
+			IdSale:    1,
 		}
 
 		user, err := kemejaUseCaseInterface.InsertKemeja(requestInsertKemeja, context.Background())
@@ -183,7 +183,7 @@ func TestInsertKemeja(t *testing.T) {
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   0,
-			SaleID:    1,
+			IdSale:    1,
 		}
 
 		user, err := kemejaUseCaseInterface.InsertKemeja(requestInsertKemeja, context.Background())
@@ -202,7 +202,7 @@ func TestInsertKemeja(t *testing.T) {
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   10,
-			SaleID:    1,
+			IdSale:    1,
 		}
 		kemeja, err := kemejaUseCaseInterface.InsertKemeja(requestInsertKemeja, context.Background())
 
@@ -274,7 +274,7 @@ func TestEditkemeja(t *testing.T) {
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   10,
-			SaleID:    1,
+			IdSale:    1,
 		}
 
 		kemeja, err := kemejaUseCaseInterface.EditKemeja(requestEditKemeja, 1, context.Background())
@@ -293,7 +293,7 @@ func TestEditkemeja(t *testing.T) {
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   0,
-			SaleID:    1,
+			IdSale:    1,
 		}
 
 		user, err := kemejaUseCaseInterface.EditKemeja(requestEditKemeja, 0, context.Background())
@@ -312,7 +312,7 @@ func TestEditkemeja(t *testing.T) {
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   10,
-			SaleID:    1,
+			IdSale:    1,
 		}
 
 		user, err := kemejaUseCaseInterface.EditKemeja(requestEditKemeja, 1, context.Background())
@@ -331,7 +331,7 @@ func TestEditkemeja(t *testing.T) {
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   10,
-			SaleID:    1,
+			IdSale:    1,
 		}
 
 		user, err := kemejaUseCaseInterface.EditKemeja(requestEditKemeja, 1, context.Background())
@@ -350,7 +350,7 @@ func TestEditkemeja(t *testing.T) {
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   10,
-			SaleID:    1,
+			IdSale:    1,
 		}
 
 		user, err := kemejaUseCaseInterface.EditKemeja(requestEditKemeja, 1, context.Background())
@@ -369,7 +369,7 @@ func TestEditkemeja(t *testing.T) {
 			Stock_L:   10,
 			Stock_M:   10,
 			Stock_S:   10,
-			SaleID:    1,
+			IdSale:    1,
 		}
 		kemeja, err := kemejaUseCaseInterface.EditKemeja(requestEditKemeja, 1, context.Background())
 

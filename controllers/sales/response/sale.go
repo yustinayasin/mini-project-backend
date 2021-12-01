@@ -1,7 +1,6 @@
 package response
 
 import (
-	"kemejaku/business/kemejas"
 	"kemejaku/business/sales"
 	"time"
 
@@ -9,15 +8,15 @@ import (
 )
 
 type SaleResponse struct {
-	Id               int              `json:"id"`
-	Percent          float64          `json:"percent"`
-	MinimumPembelian int              `json:"minimumPembelian"`
-	StartDate        time.Time        `json:"startDate"`
-	EndDate          time.Time        `json:"endDate"`
-	Kemejas          []kemejas.Kemeja `json:"kemejas"`
-	CreatedAt        time.Time        `json:"createdAt"`
-	UpdatedAt        time.Time        `json:"updatedAt"`
-	DeletedAt        gorm.DeletedAt   `gorm:"index" json:"deletedAt"`
+	Id               int       `json:"id"`
+	Percent          float64   `json:"percent"`
+	MinimumPembelian int       `json:"minimumPembelian"`
+	StartDate        time.Time `json:"startDate"`
+	EndDate          time.Time `json:"endDate"`
+	// Kemejas          []kemejas.Kemeja `json:"kemejas"`
+	CreatedAt time.Time      `json:"createdAt"`
+	UpdatedAt time.Time      `json:"updatedAt"`
+	DeletedAt gorm.DeletedAt `gorm:"index" json:"deletedAt"`
 }
 
 func FromUsecase(sale sales.Sale) SaleResponse {
@@ -27,10 +26,10 @@ func FromUsecase(sale sales.Sale) SaleResponse {
 		MinimumPembelian: sale.MinimumPembelian,
 		StartDate:        sale.StartDate,
 		EndDate:          sale.EndDate,
-		Kemejas:          sale.Kemejas,
-		CreatedAt:        sale.CreatedAt,
-		UpdatedAt:        sale.UpdatedAt,
-		DeletedAt:        sale.DeletedAt,
+		// Kemejas:          sale.Kemejas,
+		CreatedAt: sale.CreatedAt,
+		UpdatedAt: sale.UpdatedAt,
+		DeletedAt: sale.DeletedAt,
 	}
 }
 

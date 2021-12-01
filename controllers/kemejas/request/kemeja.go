@@ -9,7 +9,7 @@ type Kemeja struct {
 	Stock_L   int    `json:"stock_L"`
 	Stock_M   int    `json:"stock_M"`
 	Stock_S   int    `json:"stock_S"`
-	SaleID    int    `json:"saleID"`
+	IdSale    int    `json:"idSale"`
 }
 
 func (kemeja *Kemeja) ToUsecase() *kemejas.Kemeja {
@@ -20,6 +20,6 @@ func (kemeja *Kemeja) ToUsecase() *kemejas.Kemeja {
 		Stock_L:   kemeja.Stock_L,
 		Stock_M:   kemeja.Stock_M,
 		Stock_S:   kemeja.Stock_S,
-		SaleID:    kemeja.SaleID,
+		IdSale:    kemeja.IdSale,
 	}
 }

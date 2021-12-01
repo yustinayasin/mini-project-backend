@@ -15,7 +15,7 @@ type Kemeja struct {
 	Stock_L   int
 	Stock_M   int
 	Stock_S   int
-	SaleID    int
+	IdSale    int
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt
