@@ -113,6 +113,9 @@ func (userUseCase *UserUseCase) EditUser(user User, id int, ctx context.Context)
 		return User{}, errors.New("Password empty")
 	}
 
+	hash, _ := HashPassword(user.Password)
+	user.Password = hash
+
 	userRepo, err := userUseCase.repo.EditUser(user, id, ctx)
 
 	if err != nil {
