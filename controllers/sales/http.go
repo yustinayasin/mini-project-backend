@@ -79,7 +79,7 @@ func (controller *SaleController) EditSale(c echo.Context) error {
 	ctx := c.Request().Context()
 
 	var sale request.Sale
-	saleId, _ := strconv.Atoi(c.Param("kemejaId"))
+	saleId, _ := strconv.Atoi(c.Param("saleId"))
 	err := c.Bind(&sale)
 
 	if err != nil {
