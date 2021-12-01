@@ -14,10 +14,10 @@ type Sale struct {
 	MinimumPembelian int
 	StartDate        time.Time
 	EndDate          time.Time
-	Kemejas          []kemejas.Kemeja `gorm:"foreignKey:IdSale"`
-	CreatedAt        time.Time        `gorm:"autoCreateTime"`
-	UpdatedAt        time.Time        `gorm:"autoUpdateTime"`
-	DeletedAt        gorm.DeletedAt   `gorm:"index"`
+	Kemejas          []kemejas.Kemeja
+	CreatedAt        time.Time      `gorm:"autoCreateTime"`
+	UpdatedAt        time.Time      `gorm:"autoUpdateTime"`
+	DeletedAt        gorm.DeletedAt `gorm:"index"`
 }
 
 func (sale Sale) ToUsecase() sales.Sale {

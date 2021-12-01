@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	_middleware "kemejaku/app/middleware"
+	"kemejaku/helpers"
 	"time"
 )
 
@@ -43,7 +44,7 @@ func (userUseCase *UserUseCase) Login(user User, ctx context.Context) (User, err
 		return User{}, err
 	}
 
-	match := CheckPasswordHash(user.Password, userRepo.Password)
+	match := helpers.CheckPasswordHash(user.Password, userRepo.Password)
 
 	if match != true {
 		return User{}, errors.New("Password doesn't match")
@@ -73,7 +74,7 @@ func (userUseCase *UserUseCase) SignUp(user User, ctx context.Context) (User, er
 		return User{}, errors.New("Password empty")
 	}
 
-	hash, _ := HashPassword(user.Password)
+	hash, _ := helpers.HashPassword(user.Password)
 
 	user.Password = hash
 
@@ -113,7 +114,7 @@ func (userUseCase *UserUseCase) EditUser(user User, id int, ctx context.Context)
 		return User{}, errors.New("Password empty")
 	}
 
-	hash, _ := HashPassword(user.Password)
+	hash, _ := helpers.HashPassword(user.Password)
 	user.Password = hash
 
 	userRepo, err := userUseCase.repo.EditUser(user, id, ctx)

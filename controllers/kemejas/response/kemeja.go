@@ -15,7 +15,7 @@ type KemejaResponse struct {
 	Stock_L   int            `json:"stock_L"`
 	Stock_M   int            `json:"stock_M"`
 	Stock_S   int            `json:"stock_S"`
-	IdSale    int            `json:"idSale"`
+	SaleID    int            `json:"saleID"`
 	CreatedAt time.Time      `json:"createdAt"`
 	UpdatedAt time.Time      `json:"updatedAt"`
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"deletedAt"`
@@ -30,7 +30,7 @@ func FromUsecase(kemeja kemejas.Kemeja) KemejaResponse {
 		Stock_L:   kemeja.Stock_L,
 		Stock_M:   kemeja.Stock_M,
 		Stock_S:   kemeja.Stock_S,
-		IdSale:    kemeja.IdSale,
+		SaleID:    kemeja.SaleID,
 		CreatedAt: kemeja.CreatedAt,
 		UpdatedAt: kemeja.UpdatedAt,
 		DeletedAt: kemeja.DeletedAt,
