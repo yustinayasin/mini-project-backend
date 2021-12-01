@@ -34,6 +34,7 @@ func FromUsecase(user users.User) UserResponse {
 		Street:      user.Street,
 		Address:     user.Address,
 		PostalCode:  user.PostalCode,
+		Keranjang:   user.Keranjang,
 		CreatedAt:   user.CreatedAt,
 		UpdatedAt:   user.UpdatedAt,
 		DeletedAt:   user.DeletedAt,

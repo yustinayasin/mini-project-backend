@@ -18,7 +18,7 @@ type User struct {
 	Street      string
 	Address     string
 	PostalCode  string
-	Keranjangs  keranjangs.Keranjang
+	Keranjang   keranjangs.Keranjang
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   gorm.DeletedAt

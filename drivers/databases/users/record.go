@@ -35,7 +35,7 @@ func (user User) ToUsecase() users.User {
 		Street:      user.Street,
 		Address:     user.Address,
 		PostalCode:  user.PostalCode,
-		Keranjangs:  newKeranjang,
+		Keranjang:   newKeranjang,
 		CreatedAt:   user.CreatedAt,
 		UpdatedAt:   user.UpdatedAt,
 		DeletedAt:   user.DeletedAt,
@@ -52,6 +52,8 @@ func ToUsecaseList(user []User) []users.User {
 }
 
 func FromUsecase(user users.User) User {
+	newKeranjang := keranjangs.FromUsecase(user.Keranjang)
+
 	return User{
 		Id:          user.Id,
 		Name:        user.Name,
@@ -61,6 +63,7 @@ func FromUsecase(user users.User) User {
 		Street:      user.Street,
 		Address:     user.Address,
 		PostalCode:  user.PostalCode,
+		Keranjang:   newKeranjang,
 		CreatedAt:   user.CreatedAt,
 		UpdatedAt:   user.UpdatedAt,
 		DeletedAt:   user.DeletedAt,
