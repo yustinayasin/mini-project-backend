@@ -21,7 +21,7 @@ func NewKeranjangRepo(gormDb *gorm.DB) keranjangs.KeranjangRepoInterface {
 func (repo *KeranjangRepository) InsertKeranjang(kk keranjangs.Keranjang, ctx context.Context) (keranjangs.Keranjang, error) {
 	keranjangDB := FromUsecase(kk)
 
-	result := repo.db.Create(&keranjangDB)
+	result := repo.db.Preload("KemejaKeranjang").Create(&keranjangDB)
 
 	if result.Error != nil {
 		return keranjangs.Keranjang{}, result.Error
@@ -55,7 +55,7 @@ func (repo *KeranjangRepository) EditKeranjang(kk keranjangs.Keranjang, id int, 
 	keranjangDB := FromUsecase(kk)
 	var newKeranjang Keranjang
 
-	result := repo.db.First(&newKeranjang, id)
+	result := repo.db.Preload("KemejaKeranjang").First(&newKeranjang, id)
 
 	if result.Error != nil {
 		return keranjangs.Keranjang{}, result.Error
