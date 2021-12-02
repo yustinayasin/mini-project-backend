@@ -21,7 +21,7 @@ func NewSaleRepo(gormDb *gorm.DB) sales.SaleRepoInterface {
 func (repo *SaleRepository) InsertSale(sale sales.Sale, ctx context.Context) (sales.Sale, error) {
 	saleDB := FromUsecase(sale)
 
-	result := repo.db.Create(&saleDB)
+	result := repo.db.Preload("Kemejas").Create(&saleDB)
 
 	if result.Error != nil {
 		return sales.Sale{}, result.Error
@@ -55,7 +55,7 @@ func (repo *SaleRepository) EditSale(kk sales.Sale, id int, ctx context.Context)
 	saleDB := FromUsecase(kk)
 	var newSale Sale
 
-	result := repo.db.First(&newSale, id)
+	result := repo.db.Preload("Kemejas").First(&newSale, id)
 
 	if result.Error != nil {
 		return sales.Sale{}, result.Error

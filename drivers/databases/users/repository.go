@@ -75,7 +75,7 @@ func (repo *UserRepository) EditUser(user users.User, id int, ctx context.Contex
 	userDB := FromUsecase(user)
 	var newUser User
 
-	result := repo.db.First(&newUser, id)
+	result := repo.db.Preload("Keranjang").First(&newUser, id)
 
 	if result.Error != nil {
 		return users.User{}, errors.New("User not found")
