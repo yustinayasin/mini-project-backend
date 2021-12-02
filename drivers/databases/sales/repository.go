@@ -32,7 +32,7 @@ func (repo *SaleRepository) InsertSale(sale sales.Sale, ctx context.Context) (sa
 func (repo *SaleRepository) GetAllSale(ctx context.Context) ([]sales.Sale, error) {
 	var saleDB []Sale
 
-	result := repo.db.Find(&saleDB)
+	result := repo.db.Preload("Kemejas").Find(&saleDB)
 
 	if result.Error != nil {
 		return []sales.Sale{}, result.Error
@@ -43,7 +43,7 @@ func (repo *SaleRepository) GetAllSale(ctx context.Context) ([]sales.Sale, error
 func (repo *SaleRepository) GetSaleDetail(id int, ctx context.Context) (sales.Sale, error) {
 	var saleDB Sale
 
-	result := repo.db.First(&saleDB, id)
+	result := repo.db.Preload("Kemejas").First(&saleDB, id)
 
 	if result.Error != nil {
 		return sales.Sale{}, result.Error
